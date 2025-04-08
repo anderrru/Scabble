@@ -33,3 +33,11 @@ public class WordMap {
 	public HashMap<Integer, String> getWordMap() {
 		return wordMap;
 	}
+
+	public String getWord(int wordCode) {
+		return wordMap.get(wordCode);
+	}
+	
+	public int getMapSize() {
+		return wordMap.size();
+	}
