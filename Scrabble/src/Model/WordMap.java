@@ -26,7 +26,8 @@ public class WordMap {
 			int wordCode = word.hashCode();
 			wordMap.put(wordCode, word);
 		}
-		
+
+		wordScanner.close();
 		return wordMap;
 	}
 
