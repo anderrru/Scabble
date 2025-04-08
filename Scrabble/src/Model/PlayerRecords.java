@@ -25,7 +25,7 @@ public class PlayerRecords {
 	}
 	
 	private void readPlayerSaves() {
-		File saves = new File("playerSaves.txt");
+		File saves = new File("PlayerSaves.txt");
 		try {
 			Scanner savesScanner = new Scanner(saves);
 			while(savesScanner.hasNext()) {
@@ -41,7 +41,7 @@ public class PlayerRecords {
 	}
 	
 	public void writePlayerSaves() {
-		File saves = new File("playerSaves.txt");
+		File saves = new File("PlayerSaves.txt");
 		try {
 			FileWriter writer = new FileWriter(saves);
 			for (String p: players.keySet()) {
