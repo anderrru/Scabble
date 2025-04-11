@@ -42,3 +42,4 @@ public class WordMap {
 	public int getMapSize() {
 		return wordMap.size();
 	}
+}

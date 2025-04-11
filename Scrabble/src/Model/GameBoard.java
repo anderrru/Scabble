@@ -18,7 +18,11 @@ public class GameBoard {
 		}
 	}
 
+	/*
 	public boolean checkValidMove() {
 		// TODO check if move is valid
 	}
+	*/
+	
+	// THis is an actual change
 }
