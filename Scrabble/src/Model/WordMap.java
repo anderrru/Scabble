@@ -9,8 +9,12 @@ public class WordMap {
 
 	private HashMap<Integer, String> wordMap;
 	
-	public WordMap() throws FileNotFoundException {
-		wordMap = makeWordMap();
+	public WordMap(){
+		try {
+			wordMap = makeWordMap();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private static HashMap<Integer, String> makeWordMap() throws FileNotFoundException {
