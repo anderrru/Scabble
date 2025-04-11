@@ -115,6 +115,7 @@ public class GamePiece {
 		}
 	}
 	
+	
 	@Override
 	public String toString() {
 		return "" + this.letter + ": with a point value of: " + this.value;
