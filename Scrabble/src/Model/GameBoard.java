@@ -99,7 +99,7 @@ public class GameBoard {
                     result += " | ";
                 }
             }
-
+          
             // Add row separator except for the last row
             if (i < board.length - 1) {
                 result += "\n" + "-".repeat(board[i].length * 5 - 1) + "\n"; // Create a row of '-' for separator
@@ -110,8 +110,5 @@ public class GameBoard {
 
         return result;
 	}
-
-
-	
 
 }
