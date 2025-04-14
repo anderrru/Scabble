@@ -49,6 +49,23 @@ public class GameBoard {
 			{12,6}, {12,8}, {14,3}, {14,11}
 		};
 
+		board[7][7].setSpecial(Type.Center);
+		
+		for (int[] coord : tripleWordCoords) {
+		    board[coord[0]][coord[1]].setSpecial(Type.TripleWord);
+		}
+
+		for (int[] coord : tripleLetterCoords) {
+		    board[coord[0]][coord[1]].setSpecial(Type.TripleLetter);
+		}
+
+		for (int[] coord : doubleWordCoords) {
+		    board[coord[0]][coord[1]].setSpecial(Type.DoubleWord);
+		}
+		
+		for (int[] coord : doubleLetterCoords) {
+		    board[coord[0]][coord[1]].setSpecial(Type.DoubleLetter);
+      
 		board[7][7].setSpecial(Type.Center); // Set the Center Star Piece
 		
 		for (int[] coord : tripleWordCoords) {
@@ -74,10 +91,10 @@ public class GameBoard {
 		return board[i][j];
 	}
 	
-	public void placeGamePiece(int i, int j) {
+	public void placeGamePiece(int i, int j, GamePiece piece) {
 		Tile tile = getTile(i,j);
 		if (tile.isEmpty()) {
-			// TODO implement helper functions that checks if placement i, j is valid
+			tile.setPiece(piece);
 		}
 	}
 	
@@ -110,5 +127,4 @@ public class GameBoard {
 
         return result;
 	}
-
 }
