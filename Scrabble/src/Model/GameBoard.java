@@ -65,6 +65,23 @@ public class GameBoard {
 		
 		for (int[] coord : doubleLetterCoords) {
 		    board[coord[0]][coord[1]].setSpecial(Type.DoubleLetter);
+      
+		board[7][7].setSpecial(Type.Center); // Set the Center Star Piece
+		
+		for (int[] coord : tripleWordCoords) {
+		    board[coord[0]][coord[1]].setSpecial(Type.TripleWord); // Set all Triple Words
+		}
+
+		for (int[] coord : tripleLetterCoords) {
+		    board[coord[0]][coord[1]].setSpecial(Type.TripleLetter); // Set all Triple Letters
+		}
+
+		for (int[] coord : doubleWordCoords) {
+		    board[coord[0]][coord[1]].setSpecial(Type.DoubleWord); // Set all Double Words
+		}
+		
+		for (int[] coord : doubleLetterCoords) {
+		    board[coord[0]][coord[1]].setSpecial(Type.DoubleLetter); // Set all Double Letters
 		}
 		
 		
@@ -99,7 +116,7 @@ public class GameBoard {
                     result += " | ";
                 }
             }
-
+          
             // Add row separator except for the last row
             if (i < board.length - 1) {
                 result += "\n" + "-".repeat(board[i].length * 5 - 1) + "\n"; // Create a row of '-' for separator
