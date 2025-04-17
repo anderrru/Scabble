@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -42,7 +43,7 @@ public class Move {
 		this.startY = y;
 		this.direction = direction;
 	}
-	public HashMap<int[], GamePiece> getMove() {
+	public HashMap<Position, GamePiece> getMove() {
 		return this.move;
 	}
 
