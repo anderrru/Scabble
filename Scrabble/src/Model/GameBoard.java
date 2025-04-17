@@ -65,6 +65,7 @@ public class GameBoard {
 		
 		for (int[] coord : doubleLetterCoords) {
 		    board[coord[0]][coord[1]].setSpecial(Type.DoubleLetter);
+		}
       
 		board[7][7].setSpecial(Type.Center); // Set the Center Star Piece
 		
@@ -83,18 +84,17 @@ public class GameBoard {
 		for (int[] coord : doubleLetterCoords) {
 		    board[coord[0]][coord[1]].setSpecial(Type.DoubleLetter); // Set all Double Letters
 		}
-		
-		
 	}
 	
 	public Tile getTile(int i, int j) {
 		return board[i][j];
 	}
 	
-	public void placeGamePiece(int i, int j, GamePiece piece) {
-		Tile tile = getTile(i,j);
+	public void placeGamePiece(int i, int j, GamePiece piece, Player hand) {
+		Tile tile = getTile(j, i);
 		if (tile.isEmpty()) {
 			tile.setPiece(piece);
+			hand.removeFromHand(piece);
 		}
 	}
 	

@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 public class Move implements Iterable<GamePiece>{
 	private ArrayList<GamePiece> move;
-	public enum Directions {Vertical, Horizonal};
+	public enum Directions {Vertical, Horizontal};
 	private Directions direction;
 	private int startX;
 	private int startY;

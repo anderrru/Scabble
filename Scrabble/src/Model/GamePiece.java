@@ -123,6 +123,7 @@ public class GamePiece {
 		return "" + this.letter + ": with a point value of: " + this.value;
 	}
 	
+
 	public String getLetter() {
 		return "" + this.letter;
 	}

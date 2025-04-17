@@ -43,23 +43,4 @@ public class Tile {
 		}
 	}
 	
-	public void setSpecial(Type type) {
-		this.type = type;
-	}
-	
-	@Override
-	public String toString() {
-		if (this.piece != null) {
-			return "A"; // Has to be the piece's letter but I don't currently know how to get that
-		}
-		else {
-			if (type == Type.Center) return "**";
-			else if (type == Type.TripleWord) return "TW";
-			else if (type == Type.TripleLetter) return "TL";
-			else if (type == Type.DoubleWord) return "DW";
-			else if (type == Type.DoubleLetter) return "DL";
-			else return "  ";
-		}
-	}
-	
 }
