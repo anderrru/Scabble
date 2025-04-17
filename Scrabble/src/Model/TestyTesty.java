@@ -12,8 +12,18 @@ public class TestyTesty {
 		//board.placeGamePiece(0, 1, a1);
 		//System.out.println(board);
 		
+		System.out.println(GamePiece.getMap().size());
+		
 		Player p1 = new Player("Johnathan Alexander");
 		System.out.println(p1.getPlayerHand());
+		
+		System.out.println(GamePiece.getMap().size());
+		
+		Player p2 = new Player("Erik Picazzo");
+		System.out.println(p1.getPlayerHand());
+		
+		System.out.println(GamePiece.getMap().size());
+		
 	}
 
 }

@@ -135,5 +135,9 @@ public class GamePiece {
 		GamePiece retPiece = map.remove(keys.get(0));
 		return retPiece;
 	}
+	
+	public static HashMap<String, GamePiece> getMap() {
+		return map;
+	}
 
 }
