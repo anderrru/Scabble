@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class Move {
-	private HashMap<int[], GamePiece> move;
+	private HashMap<Position, GamePiece> move;
 	public enum Directions {Vertical, Horizonal};
 	private Directions direction;
 	private int startX;
@@ -44,6 +44,18 @@ public class Move {
 	}
 	public HashMap<int[], GamePiece> getMove() {
 		return this.move;
+	}
+
+	public ArrayList<Position> getPositionsbyX(){
+		ArrayList<Position> positions = new ArrayList<Position>(move.keySet());
+		Collections.sort(positions, Position.sortByXComparator());
+		return positions;
+	}
+	
+	public ArrayList<Position> getPositionsbyY(){
+		ArrayList<Position> positions = new ArrayList<Position>(move.keySet());
+		Collections.sort(positions, Position.sortByYComparator());
+		return positions;
 	}
 
 }
