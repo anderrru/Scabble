@@ -13,6 +13,13 @@ public class Position{
 		this.y = y;
 	}
 
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
+	}
+
 	public static Comparator<Position> sortByXComparator() {
 		return new Comparator<Position>() {
 			public int compare(Position p1, Position p2) {

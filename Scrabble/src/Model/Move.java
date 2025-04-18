@@ -22,7 +22,7 @@ public class Move {
 		/*
 		 * This method adds a game piece
 		 */
-		int[] pos = {x, y};
+		Position pos = new Position(x, y);
 		move.put(pos, piece);
 	}
 
@@ -45,6 +45,10 @@ public class Move {
 	}
 	public HashMap<Position, GamePiece> getMove() {
 		return this.move;
+	}
+
+	public GamePiece getPiece(Position pos) {
+		return this.move.get(pos);
 	}
 
 	public ArrayList<Position> getPositionsbyX(){

@@ -73,15 +73,15 @@ public class GameBoard {
 		}
 
 		public void playerMove(Move move) {
-			if (checkValidMoves(move.getMove())) {
+			if (checkValidMoves(move.getMove ())) {
 				place(move.getMove());
 			}
 		}
 
 		// helper method for checking valid move
-		private boolean checkValidMoves(HashMap<int[], GamePiece> move) {
-			for (int[] k : move.keySet()) {
-				if (!board[k[0]][k[1]].isEmpty() || board[k[0]][k[1]].getPiece() != move.get(k)) {
+		private boolean checkValidMoves(HashMap<Position, GamePiece> move) {
+			for (Position pos : move.keySet()) {
+				if (!board[pos.getX()][pos.getY()].isEmpty() || board[pos.getX()][pos.getY()].getPiece() != move.get(pos)) {
 					return false;
 				}
 			}
@@ -89,9 +89,9 @@ public class GameBoard {
 		}
 
 		// helper method to place the gamepieces from move onto board
-		private void place(HashMap<int[], GamePiece> move) {
-			for (int[] key : move.keySet()) {
-				board[key[0]][key[1]].setPiece(move.get(key));
+		private void place(HashMap<Position, GamePiece> move) {
+			for (Position pos : move.keySet()) {
+				board[pos.getX()][pos.getY()].setPiece(move.get(pos));
 			}
 		}
 
