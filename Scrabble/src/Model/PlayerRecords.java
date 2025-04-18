@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 
 public class PlayerRecords {
 	private HashMap<String, int[]> players;
@@ -25,6 +26,10 @@ public class PlayerRecords {
 	}
 	
 	private void readPlayerSaves() {
+		/*
+		 * This function reads the PlayerSaves.txt file that stores player data and 
+		 * stores it into a hashmap
+		 */
 		File saves = new File("PlayerSaves.txt");
 		try {
 			Scanner savesScanner = new Scanner(saves);
@@ -35,12 +40,17 @@ public class PlayerRecords {
 				players.put(playerInfo[0], new int[]{wins, losses});
 			} 
 			savesScanner.close();
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void writePlayerSaves() {
+		/*
+		 * This function writes the PlayerSvaes.txt file with updated values
+		 * from the players HashMap;
+		 */
 		File saves = new File("PlayerSaves.txt");
 		try {
 			FileWriter writer = new FileWriter(saves);
@@ -54,26 +64,45 @@ public class PlayerRecords {
 	}
 	
 	public void addPlayer(String playerName) {
+		/*
+		 * This function adds new players to the Database
+		 */
 		if (!players.containsKey(playerName)) {
 			players.put(playerName, new int[] {0,0});
 		}
 	}
 	
 	public int getWins(String playerName) {
+		/*
+		 * Returns a specific player's number of wins
+		 */
 		return players.get(playerName)[0];
 	}
 	
 	public int getLosses(String playerName) {
+		/*
+		 * returns a specific player's number of losses
+		 */
 		return players.get(playerName)[1];
 	}
 	
+	public Set<String> getPlayerNames() {
+		return players.keySet();
+	}
+	
 	public void incrementWins(String playerName) {
+		/*
+		 * Method for increasing the number of wins for a specific player
+		 */
 		if (players.containsKey(playerName)) {
 			players.get(playerName)[0] += 1;
 		}
 	}
 	
 	public void incrementLosses(String playerName) {
+		/*
+		 * Method for increasing the number of losses for a specific player
+		 */
 		if (players.containsKey(playerName)) {
 			players.get(playerName)[1] += 1;
 		}
