@@ -1,7 +1,5 @@
 package Model;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class GamePiece {
@@ -14,10 +12,10 @@ public class GamePiece {
 		this.value = val;
 	}
 	
-	// Test method for HashMap encoding
-	//public static GamePiece getPiece(String s) {
-		//return map.get(s);
-	//}
+	// Need static getter method
+	public static HashMap<String, GamePiece> getPiece() {
+		return map;
+	}
 	
 	private static HashMap<String, GamePiece> map = new HashMap<String, GamePiece>();
 	
@@ -117,23 +115,9 @@ public class GamePiece {
 		}
 	}
 	
-	
 	@Override
 	public String toString() {
 		return "" + this.letter + ": with a point value of: " + this.value;
-	}
-	
-	public String getLetter() {
-		return "" + this.letter;
-	}
-	
-	// Might need a method to remove game pieces once they are distributed to the player's hand
-	public static GamePiece getPiece() {
-		ArrayList<String> keys = new ArrayList<>(map.keySet());
-		Collections.shuffle(keys);
-		
-		GamePiece retPiece = map.remove(keys.get(0));
-		return retPiece;
 	}
 
 }
