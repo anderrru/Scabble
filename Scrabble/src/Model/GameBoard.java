@@ -75,7 +75,7 @@ public class GameBoard {
 		}
 
 		public void playerMove(Move move) {
-			if (checkValidMoves(move.getMove ())) {
+			if (checkValidMoves(move.getMove()) && checkValidWord(move)) {
 				place(move.getMove());
 			}
 		}
@@ -104,9 +104,9 @@ public class GameBoard {
 			Position startWord = getStartOfWord(startMove, move.getDirection());
 			int x = startWord.getX();
 			int y = startWord.getY();
-			String word = "";
+			StringBuilder word = new StringBuilder();
 			while (board[y][x] != null) {
-				word += board[y][x].getPiece().getLetter();
+				word.append(board[y][x].getPiece().getLetter());
 				if (move.getDirection() == Move.Directions.Horizontal) {
 					x++;
 				}
@@ -114,7 +114,7 @@ public class GameBoard {
 					y++;
 				}
 			}
-			return wordMap.getWord(word.hashCode()) != null;
+			return wordMap.getWord(word.toString().hashCode()) != null;
 		}
 
 		private Position getStartOfWord(Position startMove, Move.Directions direction) {
