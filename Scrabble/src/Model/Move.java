@@ -22,7 +22,7 @@ public class Move {
 		/*
 		 * This method adds a game piece
 		 */
-		int[] pos = {x, y};
+		Position pos = new Position(x, y);
 		move.put(pos, piece);
 	}
 
