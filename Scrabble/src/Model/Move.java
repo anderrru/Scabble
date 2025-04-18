@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 public class Move {
 	private HashMap<Position, GamePiece> move;
-	public enum Directions {Vertical, Horizonal};
+	public enum Directions {Vertical, Horizontal};
 	private Directions direction;
 	private int startX;
 	private int startY;
@@ -38,13 +38,8 @@ public class Move {
 		return this.startY;
 	}
 
-	public void setPlacement(int x, int y, Directions direction) {
-		this.startX = x;
-		this.startY = y;
-		this.direction = direction;
-	}
 	public HashMap<Position, GamePiece> getMove() {
-		return this.move;
+		return move;
 	}
 
 	public GamePiece getPiece(Position pos) {
@@ -63,4 +58,22 @@ public class Move {
 		return positions;
 	}
 
+	public Directions getDirection() {
+		ArrayList<Position> sortByX = this.getPositionsbyX();
+		ArrayList<Position> sortByY = this.getPositionsbyY();
+		Directions direction = null;
+		int i = 1;
+		while (i < move.size()) {
+			if (sortByX.get(i).getX() == sortByX.get(i-1).getX()) direction = Directions.Vertical;
+			if (sortByY.get(i).getY() == sortByY.get(i-1).getY()) direction = Directions.Horizontal;
+			i++;
+		}
+		return direction;
+	}
+
+	public Position getStartPosition() {
+		if (Directions.Horizontal == this.getDirection())
+			return this.getPositionsbyY().getFirst();
+		else return this.getPositionsbyX().getFirst();
+	}
 }

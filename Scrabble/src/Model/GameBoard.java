@@ -2,11 +2,13 @@ package Model;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 
 import Model.Tile.Type;
 
 public class GameBoard {
 	private Tile[][] board;
+	private WordMap wordMap;
 
 	public GameBoard() {
 		board = new Tile[15][15];
@@ -16,7 +18,7 @@ public class GameBoard {
 			}
 		}
 		setSpecialTiles();
-
+		wordMap = new WordMap();
 	}
 
 	private void setSpecialTiles() {
@@ -81,7 +83,9 @@ public class GameBoard {
 		// helper method for checking valid move
 		private boolean checkValidMoves(HashMap<Position, GamePiece> move) {
 			for (Position pos : move.keySet()) {
-				if (!board[pos.getX()][pos.getY()].isEmpty() || board[pos.getX()][pos.getY()].getPiece() != move.get(pos)) {
+				Tile t = board[pos.getX()][pos.getY()];
+				if (!t.isEmpty()
+						|| !Objects.equals(t.getPiece().getLetter(), move.get(pos).getLetter())) {
 					return false;
 				}
 			}
@@ -93,6 +97,42 @@ public class GameBoard {
 			for (Position pos : move.keySet()) {
 				board[pos.getX()][pos.getY()].setPiece(move.get(pos));
 			}
+		}
+
+		private boolean checkValidWord(Move move) {
+			Position startMove = move.getStartPosition();
+			Position startWord = getStartOfWord(startMove, move.getDirection());
+			int x = startWord.getX();
+			int y = startWord.getY();
+			String word = "";
+			while (board[y][x] != null) {
+				word += board[y][x].getPiece().getLetter();
+				if (move.getDirection() == Move.Directions.Horizontal) {
+					x++;
+				}
+				else if (move.getDirection() == Move.Directions.Vertical) {
+					y++;
+				}
+			}
+			return wordMap.getWord(word.hashCode()) != null;
+		}
+
+		private Position getStartOfWord(Position startMove, Move.Directions direction) {
+			int x = startMove.getX();
+			int y = startMove.getY();
+			switch (direction) {
+				case Move.Directions.Horizontal:
+					while (board[y][x] != null) {
+						x++	;
+					}
+					break;
+				case Move.Directions.Vertical:
+					while (board[y][x] != null) {
+						y++;
+					}
+					break;
+			}
+			return new Position(x, y);
 		}
 
 		@Override
