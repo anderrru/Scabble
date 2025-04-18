@@ -135,5 +135,9 @@ public class GamePiece {
 		GamePiece retPiece = map.remove(keys.get(0));
 		return retPiece;
 	}
+	
+	public static int remainingTiles() {
+	    return map.size();
+	}
 
 }
