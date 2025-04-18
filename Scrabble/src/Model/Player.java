@@ -31,9 +31,10 @@ public class Player {
 		return output.trim();
 	}
 	
-	public GamePiece getLetter(String letter) {
+	public GamePiece getPiece(String s) {
 		for (GamePiece g : playerHand) {
-			if (g.getLetter().equals(letter.toUpperCase())) {
+			if (g.getLetter().equals(s)) {
+				playerHand.remove(g);
 				return g;
 			}
 		}
@@ -41,7 +42,11 @@ public class Player {
 		return null;
 	}
 	
-	public void removeFromHand(GamePiece g) {
-		playerHand.remove(g);
+	public ArrayList<GamePiece> getPlayerPieces() {
+		return playerHand;
+	}
+	
+	public void addToHand(GamePiece g) {
+		playerHand.add(g);
 	}
 }
