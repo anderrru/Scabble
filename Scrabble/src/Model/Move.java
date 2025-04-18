@@ -8,14 +8,9 @@ import java.util.Iterator;
 public class Move {
 	private HashMap<Position, GamePiece> move;
 	public enum Directions {Vertical, Horizontal};
-	private Directions direction;
-	private int startX;
-	private int startY;
-	private WordMap wordMap;
 
 	public Move() {
 		this.move = new HashMap<>();
-		this.wordMap = new WordMap();
 	}
 
 	public void addPiece(GamePiece piece, int x, int y) {
@@ -23,19 +18,13 @@ public class Move {
 		 * This method adds a game piece
 		 */
 		Position pos = new Position(x, y);
-		move.put(pos, piece);
+		if (!move.containsKey(pos)) {
+			move.put(pos, piece);
+		}
 	}
 
 	public void clear() {
 		move.clear();
-	}
-
-	public int getX() {
-		return this.startX;
-	}
-
-	public int getY() {
-		return this.startY;
 	}
 
 	public HashMap<Position, GamePiece> getMove() {

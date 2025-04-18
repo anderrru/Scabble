@@ -14,7 +14,6 @@ public class testy{
 		ArrayList<Position> positions = move.getPositionsbyY();
 		for (Position position : positions) {
 			System.out.println(move.getDirection() + " " + position.getX() + " " + position.getY() + " " + move.getMove().get(position));
-			System.out.println(move.getStartPosition().getX() + " " + move.getStartPosition().getY());
 		}
 	}
 }

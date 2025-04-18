@@ -105,7 +105,7 @@ public class GameBoard {
 			int x = startWord.getX();
 			int y = startWord.getY();
 			StringBuilder word = new StringBuilder();
-			while (board[y][x] != null) {
+			while (!board[y][x].isEmpty()) {
 				word.append(board[y][x].getPiece().getLetter());
 				if (move.getDirection() == Move.Directions.Horizontal) {
 					x++;
@@ -122,13 +122,13 @@ public class GameBoard {
 			int y = startMove.getY();
 			switch (direction) {
 				case Move.Directions.Horizontal:
-					while (board[y][x] != null) {
-						x++	;
+					while (!board[y][x-1].isEmpty()) {
+						x--;
 					}
 					break;
 				case Move.Directions.Vertical:
-					while (board[y][x] != null) {
-						y++;
+					while (!board[y-1][x].isEmpty()) {
+						y--;
 					}
 					break;
 			}
