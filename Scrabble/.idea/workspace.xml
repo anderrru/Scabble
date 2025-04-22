@@ -4,6 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+
     <list default="true" id="ef447f48-88d8-4f98-a5c6-d6f18fd5a980" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/src/View/GameVisualGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
@@ -16,12 +17,17 @@
       <change beforePath="$PROJECT_DIR$/src/TestModel/PlayerRecordsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestModel/PlayerRecordsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TestModel/PlayerSavesTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestModel/PlayerSavesTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TestModel/WordMapTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestModel/WordMapTests.java" afterDir="false" />
+
+    <list default="true" id="7638d577-7158-40d7-93b3-6aab6e156c43" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -48,12 +54,50 @@
   "associatedIndex": 8
 }]]></component>
   <component name="ProjectId" id="2w2zdGWNTkniFfNtOhsrluOCbte" />
+  <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$/.." source="andrewsBranch" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;anderrru&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/anderrru/Scabble.git&quot;,
+    &quot;accountId&quot;: &quot;df19a7b4-4864-4d43-988d-dfb368782709&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2vap1Ojrq3OirrR96AXGkHds0og" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+
     "Application.DragDropGameGUI.executor": "Run",
     "Application.GameGUI.executor": "Run",
     "Application.GameVisualGUI.executor": "Run",
@@ -64,6 +108,13 @@
     "Repository.Attach.Sources": "false",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+
+    "Application.TestyTesty.executor": "Run",
+    "Application.testy.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+
     "git-widget-placeholder": "andrewsBranch",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -74,6 +125,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+
   <component name="RunManager" selected="Application.GameVisualGUI">
     <configuration name="DragDropGameGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="View.DragDropGameGUI" />
@@ -107,13 +159,8 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="View.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+
+  <component name="RunManager" selected="Application.testy">
     <configuration name="TestyTesty" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Model.TestyTesty" />
       <module name="Scrabble" />
@@ -127,11 +174,33 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+
+    <configuration name="TestyTesty" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Model.TestyTesty" />
+
+    <configuration name="testy" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Model.testy" />
+
+      <module name="Scrabble" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+
         <item itemvalue="Application.GameVisualGUI" />
         <item itemvalue="Application.DragDropGameGUI" />
         <item itemvalue="Application.GameGUI" />
+
+        <item itemvalue="Application.testy" />
+
         <item itemvalue="Application.TestyTesty" />
       </list>
     </recent_temporary>
@@ -147,18 +216,32 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+
       <changelist id="ef447f48-88d8-4f98-a5c6-d6f18fd5a980" name="Changes" comment="" />
       <created>1745254542580</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1745254542580</updated>
       <workItem from="1745254543602" duration="11037000" />
+
+      <changelist id="7638d577-7158-40d7-93b3-6aab6e156c43" name="Changes" comment="" />
+      <created>1744392827429</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1744392827429</updated>
+      <workItem from="1744392828481" duration="1697000" />
+      <workItem from="1744600098702" duration="26000" />
+      <workItem from="1744661129608" duration="6448000" />
+      <workItem from="1744832820394" duration="5000" />
+      <workItem from="1744907207090" duration="33726000" />
+
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>

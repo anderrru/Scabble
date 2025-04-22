@@ -64,9 +64,6 @@ public class TestyTesty {
 					// Add a pre-check here to see if the board at position contains the letter matching s, and continue from there
 					if ((board.getTile(y, x).getPiece() != null) && (board.getTile(y, x).getPiece().getLetter().equals(s))) {
 						System.out.println("Existing tile same as desired placement");
-						System.out.println(board.getTile(y, x).getPiece());
-						playerMove.addPiece(board.getTile(y, x).getPiece(), x, y);
-						System.out.println(playerMove.getMove());
 						for (GamePiece n : usedLetters) {
 							if (n.getLetter().equals(board.getTile(y, x).getPiece().getLetter())) {
 								if (playerTurn == false) p1.addToHand(n);

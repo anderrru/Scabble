@@ -3,6 +3,9 @@ package Model;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import java.util.Objects;
+
+
 import Model.Tile.Type;
 
 public class GameBoard {
@@ -18,7 +21,6 @@ public class GameBoard {
 		}
 		setSpecialTiles();
 		wordMap = new WordMap();
-
 	}
 
 	private void setSpecialTiles() {
@@ -74,6 +76,7 @@ public class GameBoard {
 			return board[i][j];
 		}
 
+
 		public void playerMove(Move move, boolean firstMove) {
 			if (firstMove && checkValidMoves(move.getMove()) || checkValidMoves(move.getMove()) /*&& checkValidWord(move)*/) {
 				place(move.getMove());
@@ -98,10 +101,10 @@ public class GameBoard {
 		// helper method to place the gamepieces from move onto board
 		private void place(HashMap<Position, GamePiece> move) {
 			for (Position pos : move.keySet()) {
-				board[pos.getY()][pos.getX()].setPiece(move.get(pos));
+				board[pos.getX()][pos.getY()].setPiece(move.get(pos));
 			}
 		}
-		
+
 		private boolean checkValidWord(Move move) {
 			Position startMove = move.getStartPosition();
 			Position startWord = getStartOfWord(startMove, move.getDirection());
@@ -114,6 +117,7 @@ public class GameBoard {
 			while (board[y][x].getPiece() != null) {
 				word += board[y][x].getPiece().getLetter();
 				System.out.println("Current letter is " + board[y][x].getPiece().getLetter());
+
 				if (move.getDirection() == Move.Directions.Horizontal) {
 					x++;
 				}
@@ -176,4 +180,50 @@ public class GameBoard {
 
 			return result;
 		}
+
+		private Position getStartOfWord(Position startMove, Move.Directions direction) {
+			int x = startMove.getX();
+			int y = startMove.getY();
+			switch (direction) {
+				case Move.Directions.Horizontal:
+					while (!board[y][x-1].isEmpty()) {
+						x--;
+					}
+					break;
+				case Move.Directions.Vertical:
+					while (!board[y-1][x].isEmpty()) {
+						y--;
+					}
+					break;
+			}
+			return new Position(x, y);
+		}
+
+		@Override
+		public String toString() {
+			String result = ""; // Initialize the result string
+
+			for (int i = 0; i < board.length; i++) {
+				for (int j = 0; j < board[i].length; j++) {
+					// Add the string representation of the Tile to the result string
+					result += board[i][j].toString();
+
+					// Add column separator except for the last column
+					if (j < 15) {
+						result += " | ";
+					}
+				}
+
+				// Add row separator except for the last row
+				if (i < board.length - 1) {
+					result += "\n" + "-".repeat(board[i].length * 5 - 1) + "\n"; // Create a row of '-' for separator
+				} else {
+					result += "\n"; // To add a final newline after the last row
+				}
+			}
+
+			return result;
+		}
+
+		// test for stash
 	}

@@ -8,6 +8,7 @@
     </content>
     <orderEntry type="jdk" jdkName="JavaSE-22" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+
     <orderEntry type="module-library">
       <library name="JUnit4">
         <CLASSES>
