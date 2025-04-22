@@ -31,7 +31,11 @@ public class Tile {
 	public void setSpecial(Type type) {
 		this.type = type;
 	}
-	
+
+	public Type getSpecial() {
+		return this.type;
+	}
+
 	@Override
 	public String toString() {
 		if (this.piece != null) {

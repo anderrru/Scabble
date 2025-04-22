@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import Model.PlayerRecords;
 
-class PlayerRecordsTest {
+class PlayerSavesTest {
 	private static HashMap<String, int[]> ogPlayerData;
 	public static PlayerRecords records;
 	

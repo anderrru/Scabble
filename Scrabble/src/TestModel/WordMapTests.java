@@ -1,4 +1,4 @@
-package tests;
+package TestModel;
 
 import Model.WordMap;
 import org.junit.jupiter.api.Test;
