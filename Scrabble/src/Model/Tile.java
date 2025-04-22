@@ -31,11 +31,15 @@ public class Tile {
 	public void setSpecial(Type type) {
 		this.type = type;
 	}
-	
+
+	public Type getSpecial() {
+		return this.type;
+	}
+
 	@Override
 	public String toString() {
 		if (this.piece != null) {
-			return "A"; // Has to be the piece's letter but I don't currently know how to get that
+			return piece.getLetter() + " "; // Has to be the piece's letter but I don't currently know how to get that
 		}
 		else {
 			if (type == Type.Center) return "**";

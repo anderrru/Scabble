@@ -2,7 +2,9 @@ package Model;
 
 import java.util.Arrays;
 import java.util.HashMap;
+
 import java.util.Objects;
+
 
 import Model.Tile.Type;
 
@@ -74,8 +76,9 @@ public class GameBoard {
 			return board[i][j];
 		}
 
-		public void playerMove(Move move) {
-			if (checkValidMoves(move.getMove()) && checkValidWord(move)) {
+
+		public void playerMove(Move move, boolean firstMove) {
+			if (firstMove && checkValidMoves(move.getMove()) || checkValidMoves(move.getMove()) /*&& checkValidWord(move)*/) {
 				place(move.getMove());
 			}
 		}
@@ -83,12 +86,15 @@ public class GameBoard {
 		// helper method for checking valid move
 		private boolean checkValidMoves(HashMap<Position, GamePiece> move) {
 			for (Position pos : move.keySet()) {
-				Tile t = board[pos.getX()][pos.getY()];
-				if (!t.isEmpty()
-						|| !Objects.equals(t.getPiece().getLetter(), move.get(pos).getLetter())) {
+				// Passing a word using a letter that already exists within the board (the existing tile bit) causes this to return false,
+				// since the piece isn't in move.
+				if (!board[pos.getX()][pos.getY()].isEmpty() && !board[pos.getX()][pos.getY()].getPiece().getLetter().equals(move.get(pos).getLetter())
+					|| (board[pos.getX()][pos.getY()].getPiece() != move.get(pos)) && (board[pos.getX()][pos.getY()].getPiece() != null)) {
 					return false;
 				}
 			}
+			
+			System.out.println("Check valid moves returns true");
 			return true;
 		}
 
@@ -103,10 +109,15 @@ public class GameBoard {
 			Position startMove = move.getStartPosition();
 			Position startWord = getStartOfWord(startMove, move.getDirection());
 			int x = startWord.getX();
-			int y = startWord.getY();
-			StringBuilder word = new StringBuilder();
-			while (!board[y][x].isEmpty()) {
-				word.append(board[y][x].getPiece().getLetter());
+			int y = startWord.getY(); 
+			System.out.println("X is " + x);
+			System.out.println(y);
+			String word = "Nifty";
+			System.out.println("Board at y/x is " + board[y][x].getPiece());
+			while (board[y][x].getPiece() != null) {
+				word += board[y][x].getPiece().getLetter();
+				System.out.println("Current letter is " + board[y][x].getPiece().getLetter());
+
 				if (move.getDirection() == Move.Directions.Horizontal) {
 					x++;
 				}
@@ -114,7 +125,60 @@ public class GameBoard {
 					y++;
 				}
 			}
+			System.out.println("The word is " + word);
 			return wordMap.getWord(word.toString().hashCode()) != null;
+		}
+
+		private Position getStartOfWord(Position startMove, Move.Directions direction) {
+			int x = startMove.getX();
+			int y = startMove.getY();
+			
+			//System.out.println(x);
+			//System.out.println(y);
+			
+			switch (direction) {
+				case Move.Directions.Horizontal:
+					while (!board[y][x].isEmpty()) {
+						if (x - 1 == 0) break;
+						//System.out.println(y);
+						x--;
+					}
+					break;
+				case Move.Directions.Vertical:
+					while (!board[y][x].isEmpty()) {
+						if (y - 1 == 0 || board[y - 1][x].getPiece() == null) break;
+						//System.out.println(x);
+						y--;
+					}
+					break;
+			}
+			return new Position(x, y);
+		}
+
+		@Override
+		public String toString() {
+			String result = ""; // Initialize the result string
+
+			for (int i = 0; i < board.length; i++) {
+				for (int j = 0; j < board[i].length; j++) {
+					// Add the string representation of the Tile to the result string
+					result += board[i][j].toString();
+
+					// Add column separator except for the last column
+					if (j < 15) {
+						result += " | ";
+					}
+				}
+
+				// Add row separator except for the last row
+				if (i < board.length - 1) {
+					result += "\n" + "-".repeat(board[i].length * 5 - 1) + "\n"; // Create a row of '-' for separator
+				} else {
+					result += "\n"; // To add a final newline after the last row
+				}
+			}
+
+			return result;
 		}
 
 		private Position getStartOfWord(Position startMove, Move.Directions direction) {

@@ -1,18 +1,20 @@
 package Model;
 
+import java.util.ArrayList;
+
 public class Player {
 	private String name;
-	private GamePiece[] playerHand;
+	private ArrayList<GamePiece> playerHand;
 	
 	public Player(String name) {
 		this.name = name;
-		this.playerHand = new GamePiece[7];
+		this.playerHand = new ArrayList<GamePiece>();
 		fillPlayerHand();
 	}
 	
-	private void fillPlayerHand() {
-		for (int i = 0; i < 7; i++) {
-			playerHand[i] = GamePiece.getPiece();
+	public void fillPlayerHand() {
+		for (int i = playerHand.size(); i < 7; i++) {
+			playerHand.add(GamePiece.getPiece());
 		}
 	}
 	
@@ -27,5 +29,24 @@ public class Player {
 		}
 		
 		return output.trim();
+	}
+	
+	public GamePiece getPiece(String s) {
+		for (GamePiece g : playerHand) {
+			if (g.getLetter().equals(s)) {
+				playerHand.remove(g);
+				return g;
+			}
+		}
+		
+		return null;
+	}
+	
+	public ArrayList<GamePiece> getPlayerPieces() {
+		return playerHand;
+	}
+	
+	public void addToHand(GamePiece g) {
+		playerHand.add(g);
 	}
 }
