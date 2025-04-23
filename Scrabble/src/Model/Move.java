@@ -63,24 +63,39 @@ public class Move {
 		Collections.sort(positions, Position.sortByYComparator());
 		return positions;
 	}
-	
+
 	public Directions getDirection() {
 		ArrayList<Position> sortByX = this.getPositionsbyX();
 		ArrayList<Position> sortByY = this.getPositionsbyY();
 		Directions direction = null;
 		int i = 1;
 		while (i < move.size()) {
-			if (sortByX.get(i).getX() == sortByX.get(i-1).getX()) direction = Directions.Vertical;
-			if (sortByY.get(i).getY() == sortByY.get(i-1).getY()) direction = Directions.Horizontal;
+			if (sortByY.get(i).getX() == sortByY.get(i-1).getX()) direction = Directions.Vertical;
+			else direction = Directions.Horizontal;
 			i++;
 		}
 		return direction;
 	}
 
 	public Position getStartPosition() {
-		if (Directions.Horizontal == this.getDirection())
-			return this.getPositionsbyY().getFirst();
-		else return this.getPositionsbyX().getFirst();
+		Move.Directions direction = this.getDirection();
+		if (direction == null || move.isEmpty()) return null;
+
+		if (direction == Directions.Horizontal) {
+			return this.getPositionsbyY().get(0);
+		} else {
+			return this.getPositionsbyX().get(0);
+		}
+	}
+
+
+	public GamePiece getAtPosition(int x, int y) {
+		for (Position p : move.keySet()) {
+			if (p.getY() == y && p.getX() == x) {
+				return move.get(p);
+			}
+		}
+		return null;
 	}
 
 }

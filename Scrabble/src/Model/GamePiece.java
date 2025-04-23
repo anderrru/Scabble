@@ -134,7 +134,8 @@ public class GamePiece {
 		else if (this.value == PointValue.Four) return 4;
 		else if (this.value == PointValue.Five) return 5;
 		else if (this.value == PointValue.Eight) return 8;
-		else if (this.value == PointValue.Ten) return 10; 
+		else if (this.value == PointValue.Ten) return 10;
+		return 0;
 	}
 	
 	// Might need a method to remove game pieces once they are distributed to the player's hand

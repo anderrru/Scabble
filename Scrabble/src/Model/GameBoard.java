@@ -70,12 +70,13 @@ public class GameBoard {
 			board[coord[0]][coord[1]].setSpecial(Type.DoubleLetter);
 		}
 	}
-		public Tile getTile(int i, int j) {
-			return board[i][j];
+		public Tile getTile(int x, int y) {
+			return board[y][x];
 		}
 
 		public void playerMove(Move move, boolean firstMove, Player player) {
 			if (firstMove && checkValidMoves(move.getMove()) || checkValidMoves(move.getMove()) /*&& checkValidWord(move)*/) {
+				System.out.println(formWord(move));
 				place(move.getMove(), player);
 			}
 		}
@@ -85,13 +86,11 @@ public class GameBoard {
 			for (Position pos : move.keySet()) {
 				// Passing a word using a letter that already exists within the board (the existing tile bit) causes this to return false,
 				// since the piece isn't in move.
-				if (!board[pos.getX()][pos.getY()].isEmpty() && !board[pos.getX()][pos.getY()].getPiece().getLetter().equals(move.get(pos).getLetter())
-					|| (board[pos.getX()][pos.getY()].getPiece() != move.get(pos)) && (board[pos.getX()][pos.getY()].getPiece() != null)) {
+				if (!board[pos.getY()][pos.getX()].isEmpty() && !board[pos.getY()][pos.getX()].getPiece().getLetter().equals(move.get(pos).getLetter())
+					|| (board[pos.getY()][pos.getX()].getPiece() != move.get(pos)) && (board[pos.getY()][pos.getX()].getPiece() != null)) {
 					return false;
 				}
 			}
-			
-			System.out.println("Check valid moves returns true");
 			return true;
 		}
 
@@ -100,7 +99,7 @@ public class GameBoard {
 			int pointSum = 0;
 			boolean doubleWordScore = false;
 			boolean tripleWordScore = false;
-			
+
 			for (Position pos : move.keySet()) {
 				board[pos.getY()][pos.getX()].setPiece(move.get(pos));
 				
@@ -132,7 +131,7 @@ public class GameBoard {
 			Position startMove = move.getStartPosition();
 			Position startWord = getStartOfWord(startMove, move.getDirection());
 			int x = startWord.getX();
-			int y = startWord.getY(); 
+			int y = startWord.getY();
 			System.out.println("X is " + x);
 			System.out.println(y);
 			String word = "Nifty";
@@ -151,31 +150,55 @@ public class GameBoard {
 			return wordMap.getWord(word.toString().hashCode()) != null;
 		}
 
-		private Position getStartOfWord(Position startMove, Move.Directions direction) {
-			int x = startMove.getX();
-			int y = startMove.getY();
-			
-			//System.out.println(x);
-			//System.out.println(y);
-			
-			switch (direction) {
-				case Move.Directions.Horizontal:
-					while (!board[y][x].isEmpty()) {
-						if (x - 1 == 0) break;
-						//System.out.println(y);
-						x--;
-					}
-					break;
-				case Move.Directions.Vertical:
-					while (!board[y][x].isEmpty()) {
-						if (y - 1 == 0 || board[y - 1][x].getPiece() == null) break;
-						//System.out.println(x);
-						y--;
-					}
-					break;
+	private String formWord(Move move) {
+		Position startWord = getStartOfWord(move.getStartPosition(), move.getDirection());
+		int x = startWord.getX();
+		int y = startWord.getY();
+		StringBuilder word = new StringBuilder();
+
+		while (x >= 0 && x < board[0].length && y >= 0 && y < board.length) {
+			if (move.getAtPosition(x, y) != null) {
+				word.append(move.getAtPosition(x, y).getLetter());
+			} else if (board[y][x].getPiece() != null) {
+				word.append(board[y][x].getPiece().getLetter());
+			} else {
+				break;
 			}
-			return new Position(x, y);
+
+			if (move.getDirection() == Move.Directions.Horizontal) {
+				x++;
+			} else {
+				y++;
+			}
 		}
+
+		return word.toString();
+	}
+
+
+	private Position getStartOfWord(Position startMove, Move.Directions direction) {
+		int x = startMove.getX();
+		int y = startMove.getY();
+
+		switch (direction) {
+			case Horizontal:
+				// Move left until the tile is empty or out of bounds
+				while (x > 0 && board[y][x - 1].getPiece() != null) {
+					x--;
+				}
+				break;
+			case Vertical:
+				// Move up until the tile is empty or out of bounds
+				while (y > 0 && board[y - 1][x].getPiece() != null) {
+					y--;
+				}
+				break;
+		}
+
+		System.out.println("Start of word at: x=" + x + ", y=" + y);
+		return new Position(x, y);
+	}
+
 
 		@Override
 		public String toString() {

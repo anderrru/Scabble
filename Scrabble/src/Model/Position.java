@@ -5,9 +5,7 @@ import java.util.Comparator;
 public class Position{
 	private Integer x;
 	private Integer y;
-	public enum Directions {Horizontal, Vertical};
-	private Directions direction;
-	
+
 	public Position (int x, int y) {
 		this.x = x;
 		this.y = y;
