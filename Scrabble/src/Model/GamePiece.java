@@ -127,6 +127,16 @@ public class GamePiece {
 		return "" + this.letter;
 	}
 	
+	public int getPointValue() {
+		if (this.value == PointValue.One) return 1;
+		else if (this.value == PointValue.Two) return 2;
+		else if (this.value == PointValue.Three) return 3;
+		else if (this.value == PointValue.Four) return 4;
+		else if (this.value == PointValue.Five) return 5;
+		else if (this.value == PointValue.Eight) return 8;
+		else if (this.value == PointValue.Ten) return 10; 
+	}
+	
 	// Might need a method to remove game pieces once they are distributed to the player's hand
 	public static GamePiece getPiece() {
 		ArrayList<String> keys = new ArrayList<>(map.keySet());
