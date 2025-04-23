@@ -106,7 +106,7 @@ public class GameBoard {
 			Position startMove = move.getStartPosition();
 			Position startWord = getStartOfWord(startMove, move.getDirection());
 			int x = startWord.getX();
-			int y = startWord.getY(); 
+			int y = startWord.getY();
 			System.out.println("X is " + x);
 			System.out.println(y);
 			String word = "Nifty";
@@ -125,25 +125,29 @@ public class GameBoard {
 			return wordMap.getWord(word.toString().hashCode()) != null;
 		}
 
+		private String formWord(Move move) {
+			Position startMove = move.getStartPosition();
+			Position startWord = getStartOfWord(startMove, move.getDirection());
+			HashMap<Position, GamePiece> moves = move.getMove();
+			int x = startWord.getX();
+			int y = startWord.getY();
+			return "hi";
+		}
+
 		private Position getStartOfWord(Position startMove, Move.Directions direction) {
 			int x = startMove.getX();
 			int y = startMove.getY();
-			
-			//System.out.println(x);
-			//System.out.println(y);
 			
 			switch (direction) {
 				case Move.Directions.Horizontal:
 					while (!board[y][x].isEmpty()) {
 						if (x - 1 == 0) break;
-						//System.out.println(y);
 						x--;
 					}
 					break;
 				case Move.Directions.Vertical:
 					while (!board[y][x].isEmpty()) {
 						if (y - 1 == 0 || board[y - 1][x].getPiece() == null) break;
-						//System.out.println(x);
 						y--;
 					}
 					break;
