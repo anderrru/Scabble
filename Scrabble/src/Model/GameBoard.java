@@ -74,9 +74,9 @@ public class GameBoard {
 			return board[i][j];
 		}
 
-		public void playerMove(Move move, boolean firstMove) {
+		public void playerMove(Move move, boolean firstMove, Player player) {
 			if (firstMove && checkValidMoves(move.getMove()) || checkValidMoves(move.getMove()) /*&& checkValidWord(move)*/) {
-				place(move.getMove());
+				place(move.getMove(), player);
 			}
 		}
 
@@ -96,10 +96,36 @@ public class GameBoard {
 		}
 
 		// helper method to place the gamepieces from move onto board
-		private void place(HashMap<Position, GamePiece> move) {
+		private void place(HashMap<Position, GamePiece> move, Player player) {
+			int pointSum = 0;
+			boolean doubleWordScore = false;
+			boolean tripleWordScore = false;
+			
 			for (Position pos : move.keySet()) {
 				board[pos.getY()][pos.getX()].setPiece(move.get(pos));
+				
+				if (board[pos.getY()][pos.getX()].getSpecial() == Tile.Type.DoubleLetter) {
+					pointSum += move.get(pos).getPointValue() * 2;
+				}
+				else if (board[pos.getY()][pos.getX()].getSpecial() == Tile.Type.TripleLetter) {
+					pointSum += move.get(pos).getPointValue() * 3;
+				}
+				else {
+					pointSum += move.get(pos).getPointValue();
+				}
+				
+				if (board[pos.getY()][pos.getX()].getSpecial() == Tile.Type.DoubleWord) {
+					doubleWordScore = true;
+				}
+				else if (board[pos.getY()][pos.getX()].getSpecial() == Tile.Type.TripleWord) {
+					tripleWordScore = true;
+				}
 			}
+			
+			if (doubleWordScore == true) pointSum *= 2;
+			if (tripleWordScore == true) pointSum *= 3;
+			
+			player.updatePlayerPoints(pointSum);
 		}
 		
 		private boolean checkValidWord(Move move) {

@@ -5,9 +5,11 @@ import java.util.ArrayList;
 public class Player {
 	private String name;
 	private ArrayList<GamePiece> playerHand;
+	private int playerPoints;
 	
 	public Player(String name) {
 		this.name = name;
+		playerPoints = 0;
 		this.playerHand = new ArrayList<GamePiece>();
 		fillPlayerHand();
 	}
@@ -48,5 +50,13 @@ public class Player {
 	
 	public void addToHand(GamePiece g) {
 		playerHand.add(g);
+	}
+	
+	public void updatePlayerPoints(int points) {
+		playerPoints += points;
+	}
+	
+	public int getPlayerPoints() {
+		return this.playerPoints;
 	}
 }

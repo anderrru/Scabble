@@ -58,7 +58,7 @@ public class TestyTesty {
 				if (g != null) {
 					playerMove.addPiece(g, x, y);
 					usedLetters.add(g);
-					System.out.println(usedLetters);
+					System.out.println("Used Letters: " + usedLetters);
 				}
 				else {
 					// Add a pre-check here to see if the board at position contains the letter matching s, and continue from there
@@ -96,18 +96,26 @@ public class TestyTesty {
 			}
 			
 			if (invalidMove == 0) {
-				board.playerMove(playerMove, isFirstMove);
 				isFirstMove = false;
 				
-				System.out.println(board);
 				if (playerTurn == false) {
+					board.playerMove(playerMove, isFirstMove, p1);
+					
 					p1.fillPlayerHand();
+					
+					System.out.println("Player 1 word score: " + p1.getPlayerPoints());
 					System.out.println(p2.getPlayerHand());
 				}
 				else {
+					board.playerMove(playerMove, isFirstMove, p2);
+					
 					p2.fillPlayerHand();
+					
+					System.out.println("Player 2 word score: " + p2.getPlayerPoints());
 					System.out.println(p1.getPlayerHand());
 				}
+				
+				System.out.println(board);
 				
 				// Changes player turn
 				playerTurn = !playerTurn;
