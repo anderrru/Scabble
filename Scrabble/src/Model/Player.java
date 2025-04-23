@@ -1,8 +1,9 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class Player {
+public class Player implements Iterable<GamePiece> {
 	private String name;
 	private ArrayList<GamePiece> playerHand;
 	private int playerPoints;
@@ -32,7 +33,7 @@ public class Player {
 		
 		return output.trim();
 	}
-	
+
 	public GamePiece getPiece(String s) {
 		for (GamePiece g : playerHand) {
 			if (g.getLetter().equals(s)) {
@@ -58,5 +59,10 @@ public class Player {
 	
 	public int getPlayerPoints() {
 		return this.playerPoints;
+	}
+
+	@Override
+	public Iterator<GamePiece> iterator() {
+		return playerHand.iterator();
 	}
 }
