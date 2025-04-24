@@ -1,3 +1,12 @@
+/*
+* Authors: Johnathan Alexander, Erik Picazzo, Andrew Wong, Andrew Huynh
+*
+* Description: This file contains compiled information for a player's selected move,
+*		including the direction they want to play in, the starting coordinates
+*		of their play, and the subsequent coordinates of the remaining letters
+*		they play all within a HashMap to be used in later checks. 
+*/
+
 package Model;
 
 import java.util.ArrayList;
@@ -13,6 +22,7 @@ public class Move {
 	private int startY;
 	private WordMap wordMap;
 
+	// Constructor
 	public Move() {
 		this.move = new HashMap<>();
 		this.wordMap = new WordMap();
