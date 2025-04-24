@@ -1,3 +1,4 @@
+
 /*
 * Authors: Johnathan Alexander, Erik Picazzo, Andrew Wong, Andrew Huynh
 * 
@@ -167,6 +168,7 @@ public class GamePiece {
 	public static GamePiece getPiece() {
 		// This method returns a random GamePiece from the static store, simualting
 		// picking a random piece in Scrabble. 
+		if (map.isEmpty()) return null;
 		ArrayList<String> keys = new ArrayList<>(map.keySet());
 		Collections.shuffle(keys);
 		
