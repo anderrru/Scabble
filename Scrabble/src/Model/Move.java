@@ -1,3 +1,12 @@
+/*
+* Authors: Johnathan Alexander, Erik Picazzo, Andrew Wong, Andrew Huynh
+*
+* Description: This file contains compiled information for a player's selected move,
+*		including the direction they want to play in, the starting coordinates
+*		of their play, and the subsequent coordinates of the remaining letters
+*		they play all within a HashMap to be used in later checks. 
+*/
+
 package Model;
 
 import java.util.ArrayList;
@@ -7,12 +16,13 @@ import java.util.Iterator;
 
 public class Move {
 	private HashMap<Position, GamePiece> move;
-	public enum Directions {Vertical, Horizontal};
+	public enum Directions {Vertical, Horizontal, Both};
 	private Directions direction;
 	private int startX;
 	private int startY;
 	private WordMap wordMap;
 
+	// Constructor
 	public Move() {
 		this.move = new HashMap<>();
 		this.wordMap = new WordMap();
@@ -43,6 +53,10 @@ public class Move {
 		this.startY = y;
 		this.direction = direction;
 	}
+
+	public void setDirection(Directions direction) {
+		this.direction = direction;
+	}
 	
 	public HashMap<Position, GamePiece> getMove() {
 		return this.move;
@@ -65,6 +79,9 @@ public class Move {
 	}
 
 	public Directions getDirection() {
+		if (this.direction != null) {
+			return this.direction;
+		}
 		ArrayList<Position> sortByX = this.getPositionsbyX();
 		ArrayList<Position> sortByY = this.getPositionsbyY();
 		Directions direction = null;

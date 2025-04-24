@@ -1,4 +1,4 @@
-package TestModel;
+package tests;
 
 import org.junit.jupiter.api.Test;
 
@@ -52,4 +52,14 @@ public class HandTests {
 		assertEquals(0, hand.size());
 		assertTrue(hand.getTiles().isEmpty());
 	}
+	
+	@Test
+	public void testHandToStringFormat() {
+	    Hand hand = new Hand();
+	    String output = hand.toString();
+	    assertNotNull(output);
+	    assertTrue(output.startsWith("Hand:"), "String should start with 'Hand:'");
+	    assertTrue(output.length() > 5, "Hand string should include at least one tile after 'Hand:'");
+	}
+
 }
