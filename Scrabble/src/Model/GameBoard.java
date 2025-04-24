@@ -105,6 +105,10 @@ public class GameBoard {
     			*
        			* If these conditions are met, the place method is called to place the word on the board.
 			*/
+
+			if (!firstMove && move.getMove().size() == 1) {
+				searchAroundLetter(move);
+			}
 			if (firstMove && checkValidMoves(move.getMove()) || checkValidMoves(move.getMove()) && checkValidWord(move)) {
 				place(move.getMove(), player);
 			}
@@ -214,6 +218,32 @@ public class GameBoard {
 		return new Position(x, y);
 	}
 
+
+	public String searchAroundLetter(Move move) {
+		if (getDirectionAroundSingleLetter(move) != null) {
+			move.setDirection(getDirectionAroundSingleLetter(move));
+			return formWord(move);
+		}
+		return null;
+	}
+
+
+
+
+
+	private Move.Directions getDirectionAroundSingleLetter(Move move) {
+		for (Position pos : move.getMove().keySet()) {
+			if (pos.getY() != 0 && pos.getX() != 0) {
+				if (board[pos.getY() - 1][pos.getX()].getPiece() != null || board[pos.getY() + 1][pos.getX()].getPiece() != null) {
+					return Move.Directions.Vertical;
+				}
+				if (board[pos.getY()][pos.getX() - 1].getPiece() != null || board[pos.getY()][pos.getX() + 1].getPiece() != null) {
+					return Move.Directions.Horizontal;
+				}
+			}
+		}
+		return null;
+	}
 
 		@Override
 		public String toString() {
