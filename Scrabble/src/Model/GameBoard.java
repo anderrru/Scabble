@@ -1,3 +1,17 @@
+/*
+* Authors: Johnathan Alexander, Erik PIcazzo, Andrew Wong, Andrew Huynh
+*
+* Description: This file initializes the standard Scrabble game board,
+* creating a 15 x 15 space of empty Tile objects for players to form
+* various, legal Scrabble words on. In the same manner as the official
+* Scrabble board, some spaces contain double and triple, letter and word
+* scores for additional points bonuses. In addition to methods that form
+* and check words, this method has a toString method to print a representation
+* of the board to the console, so that the game can be played without a
+* GUI. 
+* 
+*/
+
 package Model;
 
 import java.util.Arrays;
@@ -9,6 +23,7 @@ public class GameBoard {
 	private Tile[][] board;
 	private WordMap wordMap;
 
+	// Constructor fills the board with new Tile objects
 	public GameBoard() {
 		board = new Tile[15][15];
 		for (int i = 0; i<board.length; i++) {
@@ -17,11 +32,16 @@ public class GameBoard {
 			}
 		}
 		setSpecialTiles();
-		wordMap = new WordMap();
+		wordMap = new WordMap(); // HashMap of all Scrabble-legal words and their hash code values
 
 	}
 
 	private void setSpecialTiles() {
+		/*
+		* This method updates all tiles that provide letter/word multiplier
+  		* point values in accordance to the official Scrabble game board to
+    		* contain necessary indicator of their special tile status. 
+		*/
 		int[][] tripleWordCoords = {
 				{0, 0}, {0, 7}, {0, 14},
 				{7, 0}, {7, 14},
@@ -70,21 +90,38 @@ public class GameBoard {
 			board[coord[0]][coord[1]].setSpecial(Type.DoubleLetter);
 		}
 	}
+	
 		public Tile getTile(int x, int y) {
+			// This method returns a Tile at the input x/y coordinates
 			return board[y][x];
 		}
 
 		public void playerMove(Move move, boolean firstMove, Player player) {
+			/*
+			* This method makes the player's "official" move, first checking to see if the move is
+   			* the first of the game, and then checks the validity of the move based on position
+      			* or checks of the move is valid based on position (and other words on the board) and 
+	 		* if the word is a legal Scrabble word. 
+    			*
+       			* If these conditions are met, the place method is called to place the word on the board.
+			*/
 			if (firstMove && checkValidMoves(move.getMove()) || checkValidMoves(move.getMove()) && checkValidWord(move)) {
 				place(move.getMove(), player);
 			}
 		}
 
-		// helper method for checking valid move
 		private boolean checkValidMoves(HashMap<Position, GamePiece> move) {
+			/*
+			* This method is a helper method for checking the validity of a move based
+   			* on the desired position of the move. 
+			*/ 
 			for (Position pos : move.keySet()) {
-				// Passing a word using a letter that already exists within the board (the existing tile bit) causes this to return false,
-				// since the piece isn't in move.
+				/*
+				* If the board at each position is not empty AND the existing letter at that position does not match
+    				* the letter the player is trying to put on the board, OR the GamePiece at that position does not match
+				* the GamePiece the player is trying to place down AND the Tile at the desired position is not equal 
+    				* to null, return false. Else, return true
+				*/ 
 				if (!board[pos.getY()][pos.getX()].isEmpty() && !board[pos.getY()][pos.getX()].getPiece().getLetter().equals(move.get(pos).getLetter())
 					|| (board[pos.getY()][pos.getX()].getPiece() != move.get(pos)) && (board[pos.getY()][pos.getX()].getPiece() != null)) {
 					return false;
