@@ -10,54 +10,144 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class GameVisualGUI extends JFrame {
     private Move previewMove = new Move();
-    private JButton previewButton;
     private JPanel handPanel;
 
     private GameBoard board;
-    private Player p1, p2;
-    private boolean playerTurn = false;
+    private ArrayList<Player> players;
+    private int currentPlayerIndex = 0;
+    private PlayerRecords playerSaves;
     private boolean isFirstMove = true;
 
     private JButton[][] boardButtons;
     private JTextField letterField, xField, yField;
-    private JTextArea handArea;
     private JButton submitButton;
 
     private final int BOARD_SIZE = 15; // assuming standard 15x15 board
 
+    private ArrayList<Player> showStartupDialog() {
+    	  
+        JDialog dialog = new JDialog(this, "Scrabble Setup", true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setLayout(new BorderLayout());
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        contentPanel.add(new JLabel("Welcome to Scrabble!"));
+        contentPanel.add(Box.createVerticalStrut(10));
+
+        JPanel countPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        countPanel.add(new JLabel("Number of Players:"));
+        JComboBox<Integer> playerCountBox = new JComboBox<>(new Integer[]{2, 3, 4});
+        countPanel.add(playerCountBox);
+        contentPanel.add(countPanel);
+
+        JPanel namesPanel = new JPanel();
+        namesPanel.setLayout(new BoxLayout(namesPanel, BoxLayout.Y_AXIS));
+        JTextField[] nameFields = new JTextField[4];
+        JLabel[] recordLabels = new JLabel[4];
+
+		for (int i = 0; i < 4; i++) {
+		    JPanel playerPanel = new JPanel();
+		    playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
+		    JPanel inputRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		    inputRow.add(new JLabel("Name for Player " + (i + 1) + ":"));
+		    nameFields[i] = new JTextField("Player " + (i + 1), 15);
+		    inputRow.add(nameFields[i]);
+		
+		    recordLabels[i] = new JLabel(" ");
+		    recordLabels[i].setFont(new Font("SansSerif", Font.ITALIC, 12));
+		    recordLabels[i].setForeground(Color.DARK_GRAY);
+		
+		    playerPanel.add(inputRow);
+		    playerPanel.add(recordLabels[i]);
+		    namesPanel.add(playerPanel);
+		
+		    final int index = i;
+		    nameFields[i].addActionListener(evt -> {
+		        String name = nameFields[index].getText().trim();
+		        if (playerSaves.getPlayerNames().contains(name)) {
+			        int wins = playerSaves.getWins(name);
+			        int losses = playerSaves.getLosses(name);
+			        recordLabels[index].setText("W/L: " + wins + " / " + losses);
+		        }
+		        else {
+		        	recordLabels[index].setText("New Player!");;
+		        }
+		
+		        recordLabels[index].revalidate();
+		        recordLabels[index].repaint();
+		    });
+		}
+
+        contentPanel.add(namesPanel);
+
+        // Control buttons
+        JPanel buttonPanel = new JPanel();
+        JButton okButton = new JButton("Start Game");
+        JButton cancelButton = new JButton("Cancel");
+        buttonPanel.add(okButton);
+        buttonPanel.add(cancelButton);
+
+        dialog.add(contentPanel, BorderLayout.CENTER);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Visibility control based on player count
+        playerCountBox.addActionListener(e -> {
+            int count = (Integer) playerCountBox.getSelectedItem();
+            for (int i = 0; i < 4; i++) {
+                nameFields[i].getParent().setVisible(i < count);
+            }
+            dialog.pack(); // Resize dynamically
+        });
+        playerCountBox.setSelectedIndex(0); // Trigger once
+
+        ArrayList<Player> players = new ArrayList<>();
+
+        okButton.addActionListener(e -> {
+            int count = (Integer) playerCountBox.getSelectedItem();
+            for (int i = 0; i < count; i++) {
+                String name = nameFields[i].getText().trim();
+                if (name.isEmpty()) name = "Player " + (i + 1);
+                players.add(new Player(name));
+                playerSaves.addPlayer(name);
+            }
+            dialog.dispose();
+        });
+
+        cancelButton.addActionListener(l -> {
+            players.clear();
+            dialog.dispose();
+            System.exit(0);
+        });
+
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        
+        playerSaves.writePlayerSaves();
+        return players;
+        
+    }
+
+    
     public GameVisualGUI() {
+    	playerSaves = new PlayerRecords();
+    	players = showStartupDialog();
         board = new GameBoard();
-        p1 = new Player("Johnathan Alexander");
-        p2 = new Player("Erik Picazzo");
 
         setTitle("Scrabble-Style Game - Visual GUI");
         setSize(900, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Input panel
-        JPanel inputPanel = new JPanel();
-        letterField = new JTextField(10);
-        xField = new JTextField(3);
-        yField = new JTextField(3);
         submitButton = new JButton("Play Word");
-        previewButton = new JButton("Preview Letter");
-        inputPanel.add(previewButton);
-        previewButton.addActionListener(e -> previewLetter());
-
-
-        inputPanel.add(new JLabel("Letter:"));
-        inputPanel.add(letterField);
-        inputPanel.add(new JLabel("X (1-15):"));
-        inputPanel.add(xField);
-        inputPanel.add(new JLabel("Y (1-15):"));
-        inputPanel.add(yField);
-        inputPanel.add(new JLabel("Direction:"));
-        inputPanel.add(submitButton);
-        add(inputPanel, BorderLayout.NORTH);
 
         // Game board panel (center)
         JPanel boardPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
@@ -98,7 +188,7 @@ public class GameVisualGUI extends JFrame {
                             btn.setForeground(Color.BLUE);
 
                             // Optionally store into previewMove
-                            Player current = playerTurn ? p2 : p1;
+                            Player current = players.get(currentPlayerIndex);
                             GamePiece dragged = current.getPiece(letter);
                             if (dragged != null) {
                                 previewMove.addPiece(dragged, finalCol, finalRow);
@@ -123,7 +213,7 @@ public class GameVisualGUI extends JFrame {
         add(boardPanel, BorderLayout.CENTER);
 
         // Player hand panel (bottom)
-        handPanel = new JPanel(new FlowLayout());
+        handPanel = new JPanel(new BorderLayout(10, 0));
         add(handPanel, BorderLayout.SOUTH);
 
         // Action listener
@@ -154,7 +244,7 @@ public class GameVisualGUI extends JFrame {
             return;
         }
 
-        Player current = playerTurn ? p2 : p1;
+        Player current = players.get(currentPlayerIndex);
         GamePiece piece = current.getPiece(letter);
         if (piece == null) {
             JOptionPane.showMessageDialog(this, "You don't have the letter '" + letter + "'");
@@ -190,12 +280,19 @@ public class GameVisualGUI extends JFrame {
         }
 
         handPanel.removeAll();
-        Player current = playerTurn ? p2 : p1;
+        Player current = players.get(currentPlayerIndex);
 
+        // Left: Player name + score
+        JLabel playerInfo = new JLabel(current.getName() + " | Score: " + current.getPlayerPoints());
+        playerInfo.setFont(new Font("SansSerif", Font.BOLD, 16));
+        handPanel.add(playerInfo, BorderLayout.WEST);
+
+        // Center: Player's tiles
+        JPanel tileContainer = new JPanel(new FlowLayout());
         for (GamePiece piece : current) {
             JButton tileButton = new JButton(piece.getLetter());
             tileButton.setFont(new Font("Monospaced", Font.BOLD, 18));
-            tileButton.setTransferHandler(new ValueExportTransferHandler(piece.getLetter())); // custom class below
+            tileButton.setTransferHandler(new ValueExportTransferHandler(piece.getLetter()));
 
             tileButton.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
@@ -205,10 +302,26 @@ public class GameVisualGUI extends JFrame {
                 }
             });
 
-            handPanel.add(tileButton);
+            tileContainer.add(tileButton);
         }
+        handPanel.add(tileContainer, BorderLayout.CENTER);
+
+        // Right: Buttons
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+
+        JButton removeButton = new JButton("Remove Letters");
+        removeButton.addActionListener(evt -> {
+            previewMove.clear();
+            updateBoardDisplay();
+        });
+
+        buttonPanel.add(submitButton);  // already defined
+        buttonPanel.add(removeButton);
+        handPanel.add(buttonPanel, BorderLayout.EAST);
+
         handPanel.revalidate();
         handPanel.repaint();
+
 
     }
 
@@ -218,7 +331,7 @@ public class GameVisualGUI extends JFrame {
             return;
         }
 
-        Player current = playerTurn ? p2 : p1;
+        Player current = players.get(currentPlayerIndex);
 
         // Create a new Move using the preview
         Move moveToCommit = new Move();
@@ -240,7 +353,7 @@ public class GameVisualGUI extends JFrame {
         isFirstMove = false;
 
         current.fillPlayerHand();
-        playerTurn = !playerTurn;
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
 
         // Clear the preview and update display
         previewMove.clear();
