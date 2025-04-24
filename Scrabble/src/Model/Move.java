@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 public class Move {
 	private HashMap<Position, GamePiece> move;
-	public enum Directions {Vertical, Horizontal};
+	public enum Directions {Vertical, Horizontal, Both};
 	private Directions direction;
 	private int startX;
 	private int startY;

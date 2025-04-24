@@ -155,7 +155,6 @@ public class GameBoard {
 		return word.toString();
 	}
 
-
 	private Position getStartOfWord(Position startMove, Move.Directions direction) {
 		int x = startMove.getX();
 		int y = startMove.getY();
