@@ -75,8 +75,7 @@ public class GameBoard {
 		}
 
 		public void playerMove(Move move, boolean firstMove, Player player) {
-			if (firstMove && checkValidMoves(move.getMove()) || checkValidMoves(move.getMove()) /*&& checkValidWord(move)*/) {
-				System.out.println(formWord(move));
+			if (firstMove && checkValidMoves(move.getMove()) || checkValidMoves(move.getMove()) && checkValidWord(move)) {
 				place(move.getMove(), player);
 			}
 		}
@@ -128,26 +127,7 @@ public class GameBoard {
 		}
 		
 		private boolean checkValidWord(Move move) {
-			Position startMove = move.getStartPosition();
-			Position startWord = getStartOfWord(startMove, move.getDirection());
-			int x = startWord.getX();
-			int y = startWord.getY();
-			System.out.println("X is " + x);
-			System.out.println(y);
-			String word = "Nifty";
-			System.out.println("Board at y/x is " + board[y][x].getPiece());
-			while (board[y][x].getPiece() != null) {
-				word += board[y][x].getPiece().getLetter();
-				System.out.println("Current letter is " + board[y][x].getPiece().getLetter());
-				if (move.getDirection() == Move.Directions.Horizontal) {
-					x++;
-				}
-				else if (move.getDirection() == Move.Directions.Vertical) {
-					y++;
-				}
-			}
-			System.out.println("The word is " + word);
-			return wordMap.getWord(word.toString().hashCode()) != null;
+			return wordMap.getWord(formWord(move).hashCode()) != null;
 		}
 
 	private String formWord(Move move) {
@@ -194,8 +174,6 @@ public class GameBoard {
 				}
 				break;
 		}
-
-		System.out.println("Start of word at: x=" + x + ", y=" + y);
 		return new Position(x, y);
 	}
 
