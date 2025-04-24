@@ -10,6 +10,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class GameVisualGUI extends JFrame {
     private Move previewMove = new Move();
@@ -18,6 +19,7 @@ public class GameVisualGUI extends JFrame {
 
     private GameBoard board;
     private Player p1, p2;
+    private PlayerRecords playerSaves;
     private boolean playerTurn = false;
     private boolean isFirstMove = true;
 
@@ -28,7 +30,112 @@ public class GameVisualGUI extends JFrame {
 
     private final int BOARD_SIZE = 15; // assuming standard 15x15 board
 
+    private ArrayList<Player> showStartupDialog() {
+    	  
+        JDialog dialog = new JDialog(this, "Scrabble Setup", true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setLayout(new BorderLayout());
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        contentPanel.add(new JLabel("Welcome to Scrabble!"));
+        contentPanel.add(Box.createVerticalStrut(10));
+
+        JPanel countPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        countPanel.add(new JLabel("Number of Players:"));
+        JComboBox<Integer> playerCountBox = new JComboBox<>(new Integer[]{2, 3, 4});
+        countPanel.add(playerCountBox);
+        contentPanel.add(countPanel);
+
+        JPanel namesPanel = new JPanel();
+        namesPanel.setLayout(new BoxLayout(namesPanel, BoxLayout.Y_AXIS));
+        JTextField[] nameFields = new JTextField[4];
+        JLabel[] recordLabels = new JLabel[4];
+
+		for (int i = 0; i < 4; i++) {
+		    JPanel playerPanel = new JPanel();
+		    playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
+		    JPanel inputRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		    inputRow.add(new JLabel("Name for Player " + (i + 1) + ":"));
+		    nameFields[i] = new JTextField("Player " + (i + 1), 15);
+		    inputRow.add(nameFields[i]);
+		
+		    recordLabels[i] = new JLabel(" ");
+		    recordLabels[i].setFont(new Font("SansSerif", Font.ITALIC, 12));
+		    recordLabels[i].setForeground(Color.DARK_GRAY);
+		
+		    playerPanel.add(inputRow);
+		    playerPanel.add(recordLabels[i]);
+		    namesPanel.add(playerPanel);
+		
+		    final int index = i;
+		    nameFields[i].addActionListener(evt -> {
+		        String name = nameFields[index].getText().trim();
+		        playerSaves.addPlayer(name);
+		        int wins = playerSaves.getWins(name);
+		        int losses = playerSaves.getLosses(name);
+		        recordLabels[index].setText("W/L: " + wins + " / " + losses);
+		      
+		
+		        recordLabels[index].revalidate();
+		        recordLabels[index].repaint();
+		    });
+		}
+
+        contentPanel.add(namesPanel);
+
+        // Control buttons
+        JPanel buttonPanel = new JPanel();
+        JButton okButton = new JButton("Start Game");
+        JButton cancelButton = new JButton("Cancel");
+        buttonPanel.add(okButton);
+        buttonPanel.add(cancelButton);
+
+        dialog.add(contentPanel, BorderLayout.CENTER);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Visibility control based on player count
+        playerCountBox.addActionListener(e -> {
+            int count = (Integer) playerCountBox.getSelectedItem();
+            for (int i = 0; i < 4; i++) {
+                nameFields[i].getParent().setVisible(i < count);
+            }
+            dialog.pack(); // Resize dynamically
+        });
+        playerCountBox.setSelectedIndex(0); // Trigger once
+
+        ArrayList<Player> players = new ArrayList<>();
+
+        okButton.addActionListener(e -> {
+            int count = (Integer) playerCountBox.getSelectedItem();
+            for (int i = 0; i < count; i++) {
+                String name = nameFields[i].getText().trim();
+                if (name.isEmpty()) name = "Player " + (i + 1);
+                players.add(new Player(name));
+            }
+            dialog.dispose();
+        });
+
+        cancelButton.addActionListener(l -> {
+            players.clear();
+            dialog.dispose();
+            System.exit(0);
+        });
+
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+
+        return players;
+    }
+
+    
     public GameVisualGUI() {
+    	playerSaves = new PlayerRecords();
+    	ArrayList<Player> players = showStartupDialog();
         board = new GameBoard();
         p1 = new Player("Johnathan Alexander");
         p2 = new Player("Erik Picazzo");
