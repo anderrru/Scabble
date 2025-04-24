@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ef447f48-88d8-4f98-a5c6-d6f18fd5a980" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PlayerSaves.txt" beforeDir="false" afterPath="$PROJECT_DIR$/PlayerSaves.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/GameBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/GameBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Move.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Move.java" afterDir="false" />
     </list>
@@ -56,6 +57,7 @@
     "Application.GameVisualGUI.executor": "Run",
     "Application.TestyTesty.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.TestModel in Scrabble.executor": "Run",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
     "Repository.Attach.Sources": "false",
@@ -125,13 +127,27 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TestModel in Scrabble" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Scrabble" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="TestModel.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="TestModel" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.GameVisualGUI" />
+        <item itemvalue="JUnit.TestModel in Scrabble" />
         <item itemvalue="Application.TestyTesty" />
         <item itemvalue="Application.GameGUI" />
         <item itemvalue="Application.DragDropGameGUI" />
-        <item itemvalue="Application.GameVisualGUI" />
       </list>
     </recent_temporary>
   </component>

@@ -43,6 +43,10 @@ public class Move {
 		this.startY = y;
 		this.direction = direction;
 	}
+
+	public void setDirection(Directions direction) {
+		this.direction = direction;
+	}
 	
 	public HashMap<Position, GamePiece> getMove() {
 		return this.move;
@@ -65,6 +69,9 @@ public class Move {
 	}
 
 	public Directions getDirection() {
+		if (this.direction != null) {
+			return this.direction;
+		}
 		ArrayList<Position> sortByX = this.getPositionsbyX();
 		ArrayList<Position> sortByY = this.getPositionsbyY();
 		Directions direction = null;
