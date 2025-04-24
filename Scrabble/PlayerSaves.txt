@@ -1,1 +1,17 @@
 Player : 1,0
+Help : 0,0
+John : 0,0
+Pence : 0,0
+Player 2 : 0,0
+Test2 : 0,0
+Player 1 : 0,0
+Hek : 0,0
+help : 0,0
+Mike : 0,0
+MIke : 0,0
+Andrew 3 : 0,0
+heck : 0,0
+Me : 0,0
+johan : 0,0
+huh : 0,0
+Bruh : 0,0
