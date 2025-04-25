@@ -11,7 +11,8 @@ import java.util.Comparator;
 public class PlayerStats{
 	private Integer wins, losses;
 	private String name;
-	
+
+	// Constructor
 	public PlayerStats(String name, int wins, int losses) {
 		this.name = name;
 		this.wins = wins;
@@ -19,17 +20,19 @@ public class PlayerStats{
 	}
 	
 	public Integer getWins() {
+		// This method returns the number of times a player has won the game
 		return wins;
 	}
 
 	public Integer getLosses() {
+		// This method returns the number of time a player has lost the game
 		return losses;
 	}
 
 	public String getName() {
+		// This method returns the player's name
 		return name;
 	}
-
 
 	public static Comparator<PlayerStats> sortByWinsComparator() {
 		/* 
@@ -50,5 +53,4 @@ public class PlayerStats{
 			}
 		};
 	}
-	
 }

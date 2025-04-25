@@ -25,14 +25,12 @@ public class Player implements Iterable<GamePiece> {
 	}
 	
 	public void swap(ArrayList<GamePiece> toSwap) {
+		// This method swaps all GamePieces in the ArrayList for new GamePiece objects
 		playerHand.swapTiles(toSwap);
 	}
 	
 	public void fillPlayerHand() {
 		// This method fills the player hand until it contains seven GamePiece objects
-//		for (int i = playerHand.size(); i < 7; i++) {
-//			playerHand.add(GamePiece.getPiece());
-//		}
 		playerHand.fillFromBag();
 	}
 	
