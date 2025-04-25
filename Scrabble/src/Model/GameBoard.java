@@ -1,5 +1,5 @@
 /*
-* Authors: Johnathan Alexander, Erik PIcazzo, Andrew Wong, Andrew Huynh
+* Authors: Johnathan Alexander, Erik Picazzo, Andrew Wong, Andrew Huynh
 *
 * Description: This file initializes the standard Scrabble game board,
 * creating a 15 x 15 space of empty Tile objects for players to form
