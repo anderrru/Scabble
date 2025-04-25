@@ -1,3 +1,11 @@
+/*
+* Authors: Johnathan Alexander, Erik Picazzo, Andrew Wong, Andrew Huynh
+*
+* Description: This file contains the code for the GUI representation of
+*		modified Scabble. AI was used in the generation of this code,
+*		and will be explained throughout the rest of the documentation. 
+*/
+
 package View;
 
 import Model.*;
@@ -13,25 +21,28 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class GameVisualGUI extends JFrame {
-    private Move previewMove = new Move();
-    private JPanel handPanel;
+	// Plethora of instance variables used to keep track of a variety of things
+    	private Move previewMove = new Move();
+    	private JPanel handPanel;
 
-    private GameBoard board;
-    private ArrayList<GamePiece> selectedForSwap = new ArrayList<>();
-    private final boolean[] voteToEndFlags;
-    private ArrayList<Player> players;
-    private int currentPlayerIndex = 0;
-    private PlayerRecords playerSaves;
-    private boolean isFirstMove = true;
+    	private GameBoard board;
+    	private ArrayList<GamePiece> selectedForSwap = new ArrayList<>();
+    	private final boolean[] voteToEndFlags;
+    	private ArrayList<Player> players;
+    	private int currentPlayerIndex = 0;
+    	private PlayerRecords playerSaves;
+    	private boolean isFirstMove = true;
 
-    private JButton[][] boardButtons;
-    private JTextField letterField, xField, yField;
-    private JButton submitButton;
+    	private JButton[][] boardButtons;
+    	private JTextField letterField, xField, yField;
+    	private JButton submitButton;
 
-    private final int BOARD_SIZE = 15; // assuming standard 15x15 board
+    	private final int BOARD_SIZE = 15; // assuming standard 15x15 board
 
-    private ArrayList<Player> showStartupDialog() {
-    	  
+    	private ArrayList<Player> showStartupDialog() {
+
+	// Creates the initial window where player's can input their names, 
+	// and the number of players participating (up to four)
         JDialog dialog = new JDialog(this, "Scrabble Setup", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setLayout(new BorderLayout());
@@ -43,36 +54,43 @@ public class GameVisualGUI extends JFrame {
         contentPanel.add(new JLabel("Welcome to Scrabble!"));
         contentPanel.add(Box.createVerticalStrut(10));
 
+	// Handles the drop down box used to select the number of players participating
         JPanel countPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         countPanel.add(new JLabel("Number of Players:"));
         JComboBox<Integer> playerCountBox = new JComboBox<>(new Integer[]{2, 3, 4});
         countPanel.add(playerCountBox);
         contentPanel.add(countPanel);
 
+	// Handles the display boxes for players to input their names
         JPanel namesPanel = new JPanel();
         namesPanel.setLayout(new BoxLayout(namesPanel, BoxLayout.Y_AXIS));
         JTextField[] nameFields = new JTextField[4];
         JLabel[] recordLabels = new JLabel[4];
-
+		
 		for (int i = 0; i < 4; i++) {
-		    JPanel playerPanel = new JPanel();
-		    playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
-		    JPanel inputRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			
+		    	JPanel playerPanel = new JPanel();
+		    	playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
+		    	JPanel inputRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		
-		    inputRow.add(new JLabel("Name for Player " + (i + 1) + ":"));
-		    nameFields[i] = new JTextField("Player " + (i + 1), 15);
-		    inputRow.add(nameFields[i]);
+		    	inputRow.add(new JLabel("Name for Player " + (i + 1) + ":"));
+		    	nameFields[i] = new JTextField("Player " + (i + 1), 15);
+		    	inputRow.add(nameFields[i]);
 		
-		    recordLabels[i] = new JLabel(" ");
-		    recordLabels[i].setFont(new Font("SansSerif", Font.ITALIC, 12));
-		    recordLabels[i].setForeground(Color.DARK_GRAY);
+		    	recordLabels[i] = new JLabel(" ");
+		    	recordLabels[i].setFont(new Font("SansSerif", Font.ITALIC, 12));
+		    	recordLabels[i].setForeground(Color.DARK_GRAY);
 		
-		    playerPanel.add(inputRow);
-		    playerPanel.add(recordLabels[i]);
-		    namesPanel.add(playerPanel);
-		
-		    final int index = i;
-		    nameFields[i].addActionListener(evt -> {
+		    	playerPanel.add(inputRow);
+		    	playerPanel.add(recordLabels[i]);
+		    	namesPanel.add(playerPanel);
+
+		// When a player has entered their name, it checks the name against the text
+		// file containing the saved players and their stats. If that player has played
+		// this Scrabble game before, it loads their stats and displays their win/loss
+		// ratio. Else, they are noted as a new player. 
+		final int index = i;
+		    	nameFields[i].addActionListener(evt -> {
 		        String name = nameFields[index].getText().trim();
 		        if (playerSaves.getPlayerNames().contains(name)) {
 			        int wins = playerSaves.getWins(name);
@@ -90,7 +108,8 @@ public class GameVisualGUI extends JFrame {
 
         contentPanel.add(namesPanel);
 
-        // Control buttons
+        // Control buttons for starting the game once all players have input their names, or
+	// exiting the application (with "Cancel")
         JPanel buttonPanel = new JPanel();
         JButton okButton = new JButton("Start Game");
         JButton cancelButton = new JButton("Cancel");
@@ -101,6 +120,9 @@ public class GameVisualGUI extends JFrame {
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
         // Visibility control based on player count
+	// This handles how many name boxes for players are visible on the GUI.
+	// A minimum of two name boxes are always shown, incrementing up to four
+	// depending on the number of players selected in the drop down box. 
         playerCountBox.addActionListener(e -> {
             int count = (Integer) playerCountBox.getSelectedItem();
             for (int i = 0; i < 4; i++) {
