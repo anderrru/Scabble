@@ -111,6 +111,8 @@ public class PlayerRecords{
 	}
 	
 	public ArrayList<PlayerStats> getSorted() {
+		// This method sorts all players in the database by their wins in 
+		// descending order, then by their wins in ascending order. 
 		ArrayList<PlayerStats> stats = new ArrayList<PlayerStats>();
 		for (String key: players.keySet()) {
 			PlayerStats current = new PlayerStats(key, players.get(key)[0], players.get(key)[1]);
@@ -118,14 +120,5 @@ public class PlayerRecords{
 		}
 		Collections.sort(stats, PlayerStats.sortByWinsComparator());
 		return stats;	
-	}
-	
-	
-
-	
-
-	
-	
-	
-  
+	} 
 }
