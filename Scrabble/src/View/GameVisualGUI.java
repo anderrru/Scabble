@@ -468,6 +468,11 @@ public class GameVisualGUI extends JFrame {
     }
 
     private void handleMove(ActionEvent e) {
+	/*
+	* This method handles player moves based on the tiles they play. 
+	*/ 
+
+	// If no tiles have been played, displays this message. 
         if (previewMove.getMove().isEmpty()) {
             JOptionPane.showMessageDialog(this, "No previewed letters to submit!");
             return;
@@ -494,12 +499,11 @@ public class GameVisualGUI extends JFrame {
         board.playerMove(moveToCommit, isFirstMove, current);
         isFirstMove = false;
 
+	// Refill the player hand from the static store
         current.fillPlayerHand();
         if (board.checkValidWord(moveToCommit)) {
            currentPlayerIndex = (currentPlayerIndex + 1) % players.size(); 
         }
-        
-        
 
         // Clear the preview and update display
         previewMove.clear();
@@ -507,8 +511,23 @@ public class GameVisualGUI extends JFrame {
     }
 
     private void gameOver() {
+	/*
+	* This method handles the events occuring after the game has ended. If one player
+ 	* has the most points, it displays them as the winner. In the event two players have tied
+  	* for points, and there exist other players in the game, they will both be displayed as the 
+   	* the winner. Else, if all players in the game have tied, no player will be the winner, and the
+    	* tie will be announced. 
+     	*
+      	* After that display, players have the option to see an overall leaderboard of all players in the
+       	* game database, which will display their names, wins, and losses, sorted by wins in descending order
+	* and then by losses in ascending order. 
+	*/ 
+
         ArrayList<Player> winners = new ArrayList<Player>();
         int maxPoints = 0;
+	// For each player in the list of players, it compares their points to the current max points value.
+	// If they have more points, the old winners are cleared and the current player is added to the list
+	// of winners. If the current player has the same number of points, then they are simply added to the list.
         for (Player p : players) {
             if (p.getPlayerPoints() > maxPoints) {
                 winners.clear();
@@ -519,10 +538,13 @@ public class GameVisualGUI extends JFrame {
             }
         }
 
+	// Display for when all players tie. 
         if (winners.size() == players.size()) {
             String result = "It's a tie! Everyone has the same score: " + maxPoints + " points.";
             showEndGameDialog(result);
-        } else {
+        } 
+	// Display for when there is/are definite winners. 
+	else {
             for (Player p : players) {
                 if (winners.contains(p)) {
                     playerSaves.incrementWins(p.getName());
@@ -542,15 +564,19 @@ public class GameVisualGUI extends JFrame {
                 result.append(p.getName()).append(" - Wins: ").append(wins).append(", Losses: ").append(losses).append("\n");
             }
 
+	    // Updates each players win/loss data in the player saves file.
             playerSaves.writePlayerSaves();
-            showEndGameDialog(result.toString());
+            showEndGameDialog(result.toString()); // Displays the end game dialogue. 
         }
 
+	// Updates the overall save data. 
         playerSaves.writePlayerSaves();
-        System.exit(0);
+        System.exit(0); // Exits the game
     }
 
     private void showEndGameDialog(String message) {
+	// This method displays the game end dialogue, with options to exit the
+	// game immediately after finishing, or to view the leaderboard first. 
         Object[] options = {"OK", "View Leaderboard"};
         int choice = JOptionPane.showOptionDialog(
                 this,
@@ -568,6 +594,8 @@ public class GameVisualGUI extends JFrame {
     }
     
     private void showLeaderboardDialog() {
+	// This method displays a window with the leaderboard dialogue, which 
+	// contains all data for every player that has played this Scrabble game before. 
         ArrayList<String> names = new ArrayList<>(playerSaves.getPlayerNames());
 
         // Sort players by wins descending
@@ -603,9 +631,8 @@ public class GameVisualGUI extends JFrame {
         JOptionPane.showMessageDialog(this, new JScrollPane(textArea), "Leaderboard", JOptionPane.PLAIN_MESSAGE);
     }
 
-
-    
     private static class ValueExportTransferHandler extends TransferHandler {
+	// This handles the dragging and dropping of each player's GamePiece tiles. 	    
         private final String value;
 
         public ValueExportTransferHandler(String value) {
@@ -623,6 +650,7 @@ public class GameVisualGUI extends JFrame {
         }
     }
 
+    // Runs the game. 
     public static void main(String[] args) {
         new GameVisualGUI();
     }
