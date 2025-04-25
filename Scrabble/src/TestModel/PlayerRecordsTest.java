@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 
 import Model.PlayerRecords;
+import Model.PlayerStats;
 
 class PlayerRecordsTest {
 	private static HashMap<String, int[]> ogPlayerData;
@@ -119,5 +121,12 @@ class PlayerRecordsTest {
 		
 		assertEquals(2, instance2.getWins("Test1"));
 		assertEquals(1, instance2.getWins("Test2"));
+	}
+	
+	@Test
+	void testGetSorted() {
+		ArrayList<PlayerStats> stats = records.getSorted();
+		assertEquals("Test1", stats.get(0).getName());
+		assertEquals("Test2", stats.get(1).getName());
 	}
 }

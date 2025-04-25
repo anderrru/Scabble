@@ -51,10 +51,4 @@ public class PlayerStats{
 		};
 	}
 	
-	@Override
-	public String toString() {
-		return name + "\t\t" + wins + " W\t " + losses + " L\n";
-	}
-	
-	
 }

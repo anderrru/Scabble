@@ -1,4 +1,4 @@
-package tests;
+package TestModel;
 
 import Model.GamePiece;
 import Model.Player;
@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 public class PlayerTest {
 
     private Player player;
@@ -14,6 +16,7 @@ public class PlayerTest {
     @BeforeEach
     public void setUp() {
         player = new Player("Player");
+        GamePiece.clearUsedPieces();
     }
 
     @Test
@@ -70,5 +73,26 @@ public class PlayerTest {
             count++;
         }
         assertEquals(player.getPlayerPieces().size(), count);
+    }
+    
+    @Test
+    public void testSwapTiles() {
+    	if (player.getPlayerPieces().size() >= 2) {
+    		ArrayList<GamePiece> toSwap = new ArrayList<>();    	
+    		toSwap.add(player.getPlayerPieces().get(0));
+    		toSwap.add(player.getPlayerPieces().get(1));
+    		player.swap(toSwap);
+    		
+    		assertEquals(7, player.getPlayerPieces().size());
+    	}
+    }
+    
+    @Test
+    public void testFillPlayerHand() {
+    	player.getPlayerPieces().clear();
+    	assertEquals(0, player.getPlayerPieces().size());
+    	
+    	player.fillPlayerHand();
+    	assertEquals(7, player.getPlayerPieces().size());
     }
 }
