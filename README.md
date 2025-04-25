@@ -31,6 +31,6 @@ Encapsulation
 
 Composition
   -
-  Player has a hand
-  GameBoard has 15 x 15 tiles
-  tile has 0 or 1 GamePiece
+  * Player has a hand
+  * GameBoard has 15 x 15 tiles
+  * tile has 0 or 1 GamePiece
