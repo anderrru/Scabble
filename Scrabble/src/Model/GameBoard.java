@@ -109,7 +109,9 @@ public class GameBoard {
 		if (!firstMove && move.getMove().size() == 1) {
 			searchAroundLetter(move);
 		}
-		if (firstMove && checkValidMoves(move.getMove()) || checkValidMoves(move.getMove()) && checkValidWord(move)) {
+		if (firstMove && checkValidMoves(move.getMove()) && checkValidWord(move) 
+				|| checkValidMoves(move.getMove()) && checkValidWord(move)) {
+			
 			place(move.getMove(), player);
 		}
 		else {
