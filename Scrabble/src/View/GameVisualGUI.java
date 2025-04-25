@@ -166,25 +166,37 @@ public class GameVisualGUI extends JFrame {
     public GameVisualGUI() {
 	/*
 	* This method creates and displays the main component of the GUI; the GameBoard.
- 	* It also displays the player whose turn it currently is, their hand of GamePiece tiles,
-  	* and buttons to play their selected word, remove their tiles placed on the board 
+ 	* It also displays the player whose turn it currently is and how many points they have, their hand of GamePiece tiles,
+  	* and buttons to play their selected word, remove their tiles placed on the board, swap GamePieces
+   	* in their hand for new GamePieces from the static store, and button to vote to end the game, where
+    	* if all players vote to end the game, the game ends. 
+     	*
+      	* Additionally, the GUI allows for a 'drag and drop' system of GamePiece placement on the board, 
+       	* for an enhanced visual quality and heightened engagement. 
 	*/
-	
+
+	// Handles the creation of the GUI window displayed for the GameBoard itself, placing all buttons
+	// and establishing the grid with it's various special tiles (colored appropriately), and blank tiles
+	// (uncolored). 
     	playerSaves = new PlayerRecords();
     	players = showStartupDialog();
-        	board = new GameBoard();
-        	voteToEndFlags = new boolean[players.size()];
+        board = new GameBoard();
+        voteToEndFlags = new boolean[players.size()];
 
-        	setTitle("Scrabble-Style Game - Visual GUI");
-        	setSize(900, 700);
-        	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        	setLayout(new BorderLayout());
+	// Sets the window that pops up
+        setTitle("Scrabble-Style Game - Visual GUI");
+        setSize(900, 700);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-        	submitButton = new JButton("Play Word");
+	// Creates the submit button
+        submitButton = new JButton("Play Word");
 
-        	// Game board panel (center)
-        	JPanel boardPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
-        	boardButtons = new JButton[BOARD_SIZE][BOARD_SIZE];
+        // Game board panel (center); created to GameBoard.java file size specifications
+        JPanel boardPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
+        boardButtons = new JButton[BOARD_SIZE][BOARD_SIZE];
+
+	// Creates the grid as a bunch of buttons, coloring the appropriate special tiles to display their uniqueness
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
 
@@ -205,6 +217,12 @@ public class GameVisualGUI extends JFrame {
                         default -> btn.setBackground(Color.WHITE);
                     }
                 }
+
+		// This is from the GUI development phase, when the GUI was being tested with
+		// various aspects of the code. It is designed to preview the validity of 
+		// individual letter placements, but has since been rendered obsolete by
+		// further code developments. We've left it in because the code breaks without it,
+		// but have hidden it on the GUI so it cannot be used...
                 int finalRow = row;
                 int finalCol = col;
                 btn.setTransferHandler(new TransferHandler("text") {
@@ -242,7 +260,8 @@ public class GameVisualGUI extends JFrame {
                 boardButtons[row][col] = btn;
                 boardPanel.add(btn);
             }
-        }
+        } // End of hidden elements of code.
+	    
         add(boardPanel, BorderLayout.CENTER);
 
         // Player hand panel (bottom)
