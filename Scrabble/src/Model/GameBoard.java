@@ -112,6 +112,11 @@ public class GameBoard {
 			if (firstMove && checkValidMoves(move.getMove()) || checkValidMoves(move.getMove()) && checkValidWord(move)) {
 				place(move.getMove(), player);
 			}
+			else {
+				for (Position p : move.getMove().keySet()) {
+					player.addToHand(move.getAtPosition(p.getX(), p.getY()));
+				}
+			}
 		}
 
 		private boolean checkValidMoves(HashMap<Position, GamePiece> move) {
