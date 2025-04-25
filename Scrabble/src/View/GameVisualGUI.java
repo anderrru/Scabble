@@ -276,6 +276,8 @@ public class GameVisualGUI extends JFrame {
     }
 
     private void previewLetter() {
+	// This code is also development phase stuff that will break the code if removed. 
+	// Thus, it has been left in, and simply not used in the final presentation of the GUI. 
         String letter = letterField.getText().toUpperCase().trim();
         if (letter.length() != 1 || !Character.isLetter(letter.charAt(0))) {
             JOptionPane.showMessageDialog(this, "Please enter a single letter.");
@@ -306,10 +308,19 @@ public class GameVisualGUI extends JFrame {
         // Store it in the preview move
         previewMove.addPiece(piece, x, y);
         updateBoardDisplay();
-    }
+    } // End of no longer used code. 
 
 
     private void updateBoardDisplay() {
+	/*
+	* This method updates the board display to account for player moves having been made.
+	*/
+
+	// These loops iterate over each element of the grid and pulling any updated values
+	// into the visual representation of the board. 
+	//
+	// Letters that have been placed but not finalized for the player's move are displayed blue,
+	// and played letters are switched to black. 
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
                 GamePiece piece = board.getTile(row, col).getPiece();
@@ -332,14 +343,19 @@ public class GameVisualGUI extends JFrame {
         }
 
         handPanel.removeAll();
+	// Sets the current player to the corresponding player at the index in the ArrayList
         Player current = players.get(currentPlayerIndex);
-
-        // Left: Player name + score
+	    
+        // Left: Player name + score; displays this information in the bottom left corner of the GUI
         JLabel playerInfo = new JLabel(current.getName() + " | Score: " + current.getPlayerPoints());
         playerInfo.setFont(new Font("SansSerif", Font.BOLD, 16));
         handPanel.add(playerInfo, BorderLayout.WEST);
 
         // Center: Player's tiles
+	// This chunk will display the player's tiles in the bottom center of the GUI.
+	// In addition to being selectable and draggable, shift-clicking will allow 
+	// a player to highlight a specific tile, which is the precursor to swapping tiles
+	// for new GamePieces. 
         JPanel tileContainer = new JPanel(new FlowLayout());
         for (GamePiece piece : current) {
             JButton tileButton = new JButton(piece.getLetter());
@@ -367,9 +383,10 @@ public class GameVisualGUI extends JFrame {
             tileContainer.add(tileButton);
         }
 
+	// Adds the overall tiles display to the GUI
         handPanel.add(tileContainer, BorderLayout.CENTER);
 
-        // Right: Buttons
+        // Right: Buttons for 'vote to end', 'swap tiles', 'play word', and 'remove letters'
         JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 5, 5));
 
         JButton removeButton = new JButton("Remove Letters");
@@ -385,6 +402,8 @@ public class GameVisualGUI extends JFrame {
             updateBoardDisplay();
         });
 
+	// Players can optionally vote to end the game; this does not affect their play of the game,
+	// but when all players have voted to end the game, then the game will end. 
         JButton voteToEndButton = new JButton("Vote to End");
         voteToEndButton.addActionListener(evt -> {
             voteToEndFlags[currentPlayerIndex] = true;
@@ -392,6 +411,7 @@ public class GameVisualGUI extends JFrame {
             for (boolean b : voteToEndFlags) {
             	if (b==true) count++;
             }
+	    // Displays the player that voted to end the game, as well as the total ratio of players that have voted to end the game
             JOptionPane.showMessageDialog(this, current.getName() + " voted to end the game.\n" + 
             							count + "/" +voteToEndFlags.length + " Players have voted.") ;
 
@@ -413,13 +433,17 @@ public class GameVisualGUI extends JFrame {
                 updateBoardDisplay();
             }
         });
+	// Adds the vote to end button to the GUI
         buttonPanel.add(voteToEndButton);
 
-        
+        // After pieces have been highlighted, the swap tiles button can be clicked
+	// to swap the highlighted tiles with new GamePieces drawn from the static store.
+	// A player that has opted to swap tiles has the remainder of their turn skipped. 
         JButton swapButton = new JButton("Swap Tiles");
         swapButton.addActionListener(evt -> {
             Player player = players.get(currentPlayerIndex);
 
+	    // If no tiles have been selected when the swap button is clicked, displays the below message.
             if (selectedForSwap.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Select tiles to swap by Shift-clicking them.");
                 return;
@@ -433,17 +457,14 @@ public class GameVisualGUI extends JFrame {
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size(); // Skip turn
             updateBoardDisplay();
         });
+	// Adds the remaining buttons to the GUI
         buttonPanel.add(swapButton);
-
-
         buttonPanel.add(submitButton);  // already defined
         buttonPanel.add(removeButton);
         handPanel.add(buttonPanel, BorderLayout.EAST);
 
         handPanel.revalidate();
         handPanel.repaint();
-
-
     }
 
     private void handleMove(ActionEvent e) {
