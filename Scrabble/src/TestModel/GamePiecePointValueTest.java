@@ -1,4 +1,4 @@
-package tests;
+package TestModel;
 
 import Model.GamePiece;
 import Model.Letter;

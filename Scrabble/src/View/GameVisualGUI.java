@@ -17,6 +17,7 @@ public class GameVisualGUI extends JFrame {
     private JPanel handPanel;
 
     private GameBoard board;
+    private ArrayList<GamePiece> selectedForSwap = new ArrayList<>();
     private ArrayList<Player> players;
     private int currentPlayerIndex = 0;
     private PlayerRecords playerSaves;
@@ -296,14 +297,25 @@ public class GameVisualGUI extends JFrame {
 
             tileButton.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
-                    JComponent comp = (JComponent) e.getSource();
-                    TransferHandler handler = comp.getTransferHandler();
-                    handler.exportAsDrag(comp, e, TransferHandler.COPY);
+                    if (e.isShiftDown()) {  // Use Shift-click to select for swap
+                        if (selectedForSwap.contains(piece)) {
+                            selectedForSwap.remove(piece);
+                            tileButton.setBackground(null);  // Un-highlight
+                        } else {
+                            selectedForSwap.add(piece);
+                            tileButton.setBackground(Color.YELLOW);  // Highlight
+                        }
+                    } else {
+                        JComponent comp = (JComponent) e.getSource();
+                        TransferHandler handler = comp.getTransferHandler();
+                        handler.exportAsDrag(comp, e, TransferHandler.COPY);
+                    }
                 }
             });
 
             tileContainer.add(tileButton);
         }
+
         handPanel.add(tileContainer, BorderLayout.CENTER);
 
         // Right: Buttons
@@ -311,9 +323,37 @@ public class GameVisualGUI extends JFrame {
 
         JButton removeButton = new JButton("Remove Letters");
         removeButton.addActionListener(evt -> {
+            Player player = players.get(currentPlayerIndex);
+
+            // Return previewed tiles to the hand
+            for (GamePiece piece : previewMove.getMove().values()) {
+                current.addToHand(piece);
+            }
+
             previewMove.clear();
             updateBoardDisplay();
         });
+
+        
+        JButton swapButton = new JButton("Swap Tiles");
+        swapButton.addActionListener(evt -> {
+            Player player = players.get(currentPlayerIndex);
+
+            if (selectedForSwap.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Select tiles to swap by Shift-clicking them.");
+                return;
+            }
+
+            player.swap(selectedForSwap);
+            selectedForSwap.clear(); // Clear swap selection
+            previewMove.clear(); // Don't allow placing after swap
+            current.fillPlayerHand();
+
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.size(); // Skip turn
+            updateBoardDisplay();
+        });
+        buttonPanel.add(swapButton);
+
 
         buttonPanel.add(submitButton);  // already defined
         buttonPanel.add(removeButton);
@@ -366,7 +406,7 @@ public class GameVisualGUI extends JFrame {
         public ValueExportTransferHandler(String value) {
             this.value = value;
         }
-
+        
         @Override
         protected Transferable createTransferable(JComponent c) {
             return new StringSelection(value);

@@ -101,7 +101,7 @@ public class TestyTesty {
 				if (playerTurn == false) {
 					board.playerMove(playerMove, isFirstMove, p1);
 					
-					p1.fillPlayerHand();
+//					p1.fillPlayerHand();
 					
 					System.out.println("Player 1 word score: " + p1.getPlayerPoints());
 					System.out.println(p2.getPlayerHand());
@@ -109,7 +109,7 @@ public class TestyTesty {
 				else {
 					board.playerMove(playerMove, isFirstMove, p2);
 					
-					p2.fillPlayerHand();
+//					p2.fillPlayerHand();
 					
 					System.out.println("Player 2 word score: " + p2.getPlayerPoints());
 					System.out.println(p1.getPlayerHand());

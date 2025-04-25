@@ -16,7 +16,7 @@ import java.util.List;
 public class Hand {
 
     private static final int MAX_SIZE = 7;
-    private final List<GamePiece> tiles;
+    private final ArrayList<GamePiece> tiles;
 
     // Constructor
     public Hand() {
@@ -36,7 +36,7 @@ public class Hand {
         }
     }
 
-    public boolean swapTiles(List<GamePiece> toSwap) {
+    public boolean swapTiles(ArrayList<GamePiece> toSwap) {
         /*
         * This method allows a player to swap tiles in their hand
         * for new ones from the static store, and checks
@@ -91,7 +91,7 @@ public class Hand {
         tiles.clear();
     }
 
-    public List<GamePiece> getTiles() {
+    public ArrayList<GamePiece> getTiles() {
         // This method returns a List of the current GamePiece objects in hand
         return tiles;
     }

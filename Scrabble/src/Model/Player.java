@@ -24,11 +24,16 @@ public class Player implements Iterable<GamePiece> {
 		this.playerHand = new Hand();
 	}
 	
+	public void swap(ArrayList<GamePiece> toSwap) {
+		playerHand.swapTiles(toSwap);
+	}
+	
 	public void fillPlayerHand() {
 		// This method fills the player hand until it contains seven GamePiece objects
-		for (int i = playerHand.size(); i < 7; i++) {
-			playerHand.add(GamePiece.getPiece());
-		}
+//		for (int i = playerHand.size(); i < 7; i++) {
+//			playerHand.add(GamePiece.getPiece());
+//		}
+		playerHand.fillFromBag();
 	}
 	
 	public String getName() {
