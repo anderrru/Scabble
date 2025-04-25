@@ -144,9 +144,6 @@ public class GamePiece {
 		}
 	}
 	
-	// Make a static block to deep copy the HashMap
-	
-	
 	@Override
 	public String toString() {
 		// This method returns a String of a GamePiece, with it's letter and corresponding point value
