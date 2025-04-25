@@ -2,9 +2,9 @@
  * Authors: Erik Picazzo, Johnathan Alexander, Andrew Wong, Andrew Huynh
  * 
  * Description: This class manages any given player's Win/Loss Record
- * keeping track of them by writing and reading from a text file named
- * "playerSaves.txt" which has a list of players in the format:
- * playerName : wins,losses
+ * 		keeping track of them by writing and reading from a text file named
+ * 		"playerSaves.txt" which has a list of players in the format:
+ * 		playerName : wins,losses
  */
 
 package Model;
@@ -19,7 +19,8 @@ import java.util.Set;
 
 public class PlayerRecords {
 	private HashMap<String, int[]> players;
-	
+
+	// Constructor
 	public PlayerRecords(){
 		players = new HashMap<String, int[]>();
 		readPlayerSaves();
@@ -27,8 +28,8 @@ public class PlayerRecords {
 	
 	private void readPlayerSaves() {
 		/*
-		 * This function reads the PlayerSaves.txt file that stores player data and 
-		 * stores it into a hashmap
+		 * This method reads the PlayerSaves.txt file that stores player data and 
+		 * stores it into a HashMap
 		 */
 		File saves = new File("PlayerSaves.txt");
 		try {
@@ -48,7 +49,7 @@ public class PlayerRecords {
 	
 	public void writePlayerSaves() {
 		/*
-		 * This function writes the PlayerSvaes.txt file with updated values
+		 * This method writes the PlayerSaves.txt file with updated values
 		 * from the players HashMap;
 		 */
 		File saves = new File("PlayerSaves.txt");
@@ -65,7 +66,8 @@ public class PlayerRecords {
 	
 	public void addPlayer(String playerName) {
 		/*
-		 * This function adds new players to the Database
+		 * This method adds new players to the database with an initial 
+   		 * win/loss score of 0/0
 		 */
 		if (!players.containsKey(playerName)) {
 			players.put(playerName, new int[] {0,0});
@@ -74,35 +76,32 @@ public class PlayerRecords {
 	
 	public int getWins(String playerName) {
 		/*
-		 * Returns a specific player's number of wins
+		 * This method returns a specific player's number of wins
 		 */
 		return players.get(playerName)[0];
 	}
 	
 	public int getLosses(String playerName) {
 		/*
-		 * returns a specific player's number of losses
+		 * This method returns a specific player's number of losses
 		 */
 		return players.get(playerName)[1];
 	}
 	
 	public Set<String> getPlayerNames() {
+		// This method returns a set of all player names within the database
 		return players.keySet();
 	}
 	
 	public void incrementWins(String playerName) {
-		/*
-		 * Method for increasing the number of wins for a specific player
-		 */
+		// This method increases the number of wins for a specific player
 		if (players.containsKey(playerName)) {
 			players.get(playerName)[0] += 1;
 		}
 	}
 	
 	public void incrementLosses(String playerName) {
-		/*
-		 * Method for increasing the number of losses for a specific player
-		 */
+		// This method increases the number of losses for a specific player
 		if (players.containsKey(playerName)) {
 			players.get(playerName)[1] += 1;
 		}
