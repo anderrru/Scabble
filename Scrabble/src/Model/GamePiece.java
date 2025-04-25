@@ -23,13 +23,16 @@ public class GamePiece {
 	private final PointValue value;
 
 	// Constructor
-	private GamePiece(Letter letter, PointValue val) {
+	private GamePiece(Letter letter, PointValue val) { 
 		this.letter = letter;
 		this.value = val;
 	}
 
 	// Static store to store all unique instances of GamePiece
 	private static HashMap<String, GamePiece> map = new HashMap<String, GamePiece>();
+
+	// Secondary static storage for pieces that have already been selected from the static store
+	private static HashMap<String, GamePiece> usedPieces = new HashMap<String, GamePiece>();
 
 	// Static block used to implement Flyweight design pattern. 
 	static {
@@ -141,6 +144,8 @@ public class GamePiece {
 		}
 	}
 	
+	// Make a static block to deep copy the HashMap
+	
 	
 	@Override
 	public String toString() {
@@ -166,19 +171,46 @@ public class GamePiece {
 	}
 	
 	public static GamePiece getPiece() {
-		// This method returns a random GamePiece from the static store, simualting
+		// This method returns a random GamePiece from the static store, simulating
 		// picking a random piece in Scrabble. 
 		if (map.isEmpty()) return null;
 		ArrayList<String> keys = new ArrayList<>(map.keySet());
-		Collections.shuffle(keys);
 		
-		GamePiece retPiece = map.remove(keys.get(0));
-		return retPiece;
+		boolean pieceFound = false;
+
+		// This checks to see if the randomly selected piece from the static store has
+		// been selected before, and will randomly select another piece if so. 
+		// The piece is then added to the usedPieces HashMap, so that it can't be selected again
+		while (pieceFound == false && usedPieces.size() != map.size()) {
+			Collections.shuffle(keys);
+			
+			String key = keys.get(0);
+			GamePiece retPiece = map.get(key);
+			
+			if (usedPieces.get(key) == null) {
+				usedPieces.put(key, retPiece);
+				pieceFound = true;
+				return retPiece; 
+			}
+		}
+		
+		return null;
+		
 	}
 	
 	public static int remainingTiles() {
-		// This method returns the size of the static store
-	    	return map.size();
+		// This method returns the number of GamePieces that have yet to be used
+	    	return 98 - usedPieces.size();
+	}
+	
+	public static int getMapSize() {
+		// This method returns the number of GamePieces in the static store
+		return map.size();
+	}
+	
+	public static void clearUsedPieces() {
+		// This method clears the HashMap containing pieces that are considered "used"
+		usedPieces.clear();
 	}
 
 }

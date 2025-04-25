@@ -20,7 +20,7 @@ public class Hand {
 
     // Constructor
     public Hand() {
-        tiles = new ArrayList<>();
+        tiles = new ArrayList<>(); 
         fillFromBag(); 
     }
 
