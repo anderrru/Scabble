@@ -172,7 +172,7 @@ public class GameBoard {
 			player.updatePlayerPoints(pointSum);
 		}
 		
-		private boolean checkValidWord(Move move) {
+		public boolean checkValidWord(Move move) {
 			return wordMap.getWord(formWord(move).hashCode()) != null;
 		}
 

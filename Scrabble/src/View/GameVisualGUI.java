@@ -393,7 +393,9 @@ public class GameVisualGUI extends JFrame {
         isFirstMove = false;
 
         current.fillPlayerHand();
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        if (board.checkValidWord(moveToCommit)) {
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        }
 
         // Clear the preview and update display
         previewMove.clear();
