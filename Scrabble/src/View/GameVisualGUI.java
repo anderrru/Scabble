@@ -134,6 +134,10 @@ public class GameVisualGUI extends JFrame {
 
         ArrayList<Player> players = new ArrayList<>();
 
+	// When the okButton is clicked, creates new players, the number of
+	// which depends on the number of players selected to play the game, utilizing
+	// the input String names to create the Player objects, and places them in
+	// an ArrayList and adding them to the player saves file if they aren't already in it.
         okButton.addActionListener(e -> {
             int count = (Integer) playerCountBox.getSelectedItem();
             for (int i = 0; i < count; i++) {
@@ -145,6 +149,7 @@ public class GameVisualGUI extends JFrame {
             dialog.dispose();
         });
 
+	// If the cancel button is clicked, the program exits and the window closes.
         cancelButton.addActionListener(l -> {
             players.clear();
             dialog.dispose();
@@ -155,27 +160,31 @@ public class GameVisualGUI extends JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
         
-        return players;
-        
+        return players; // Returns the ArrayList of Player objects. 
     }
 
-    
     public GameVisualGUI() {
+	/*
+	* This method creates and displays the main component of the GUI; the GameBoard.
+ 	* It also displays the player whose turn it currently is, their hand of GamePiece tiles,
+  	* and buttons to play their selected word, remove their tiles placed on the board 
+	*/
+	
     	playerSaves = new PlayerRecords();
     	players = showStartupDialog();
-        board = new GameBoard();
-        voteToEndFlags = new boolean[players.size()];
+        	board = new GameBoard();
+        	voteToEndFlags = new boolean[players.size()];
 
-        setTitle("Scrabble-Style Game - Visual GUI");
-        setSize(900, 700);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+        	setTitle("Scrabble-Style Game - Visual GUI");
+        	setSize(900, 700);
+        	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        	setLayout(new BorderLayout());
 
-        submitButton = new JButton("Play Word");
+        	submitButton = new JButton("Play Word");
 
-        // Game board panel (center)
-        JPanel boardPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
-        boardButtons = new JButton[BOARD_SIZE][BOARD_SIZE];
+        	// Game board panel (center)
+        	JPanel boardPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
+        	boardButtons = new JButton[BOARD_SIZE][BOARD_SIZE];
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
 
