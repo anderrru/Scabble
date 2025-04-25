@@ -1,4 +1,4 @@
-# Scabble
+# Scabble -PLAY WITH HONOR-
 
 A moddified pass and play game of Scrabble. Play with up to 4 players, player with the highest score wins, make it to the top of the leaderboard by having the most wins.
 To run the code from source, run the main method in GameVisualGUI and you will be prompted to enter the players and start the game of Scabble. The game ends when all players
