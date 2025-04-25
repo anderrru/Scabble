@@ -17,8 +17,9 @@ Iterator
 
 Strategy
   -
-  The Strategy Design patter was useful for how player moves is implemented. In order to check the validity of a word, the moves at position x,y needs to be sorted by either x or y
-  so strategy was useful for having multiple ways of sorting the player move.
+  * The Strategy Design patter was useful for how player moves is implemented. In order to check the validity of a word, the moves at position x,y needs to be sorted by either x or y so strategy was useful for having multiple ways of sorting the player move.
+  * Strategy was also used for having multiple ways of getting the direction of a move. When there is only one move then the board is searched for connecting letters to find the direction of the word, and when there is more than one move, the direction can just be found from the x, y values of the move.
+  
 
 Anti-Pattern Avoidance
   -
