@@ -13,11 +13,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
 
-public class PlayerRecords {
+public class PlayerRecords{
 	private HashMap<String, int[]> players;
 
 	// Constructor
@@ -106,5 +109,23 @@ public class PlayerRecords {
 			players.get(playerName)[1] += 1;
 		}
 	}
+	
+	public ArrayList<PlayerStats> getSorted() {
+		ArrayList<PlayerStats> stats = new ArrayList<PlayerStats>();
+		for (String key: players.keySet()) {
+			PlayerStats current = new PlayerStats(key, players.get(key)[0], players.get(key)[1]);
+			stats.add(current);
+		}
+		Collections.sort(stats, PlayerStats.sortByWinsComparator());
+		return stats;	
+	}
+	
+	
+
+	
+
+	
+	
+	
   
 }
