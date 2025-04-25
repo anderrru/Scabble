@@ -18,6 +18,7 @@ public class GameVisualGUI extends JFrame {
 
     private GameBoard board;
     private ArrayList<GamePiece> selectedForSwap = new ArrayList<>();
+    private final boolean[] voteToEndFlags;
     private ArrayList<Player> players;
     private int currentPlayerIndex = 0;
     private PlayerRecords playerSaves;
@@ -132,7 +133,6 @@ public class GameVisualGUI extends JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
         
-        playerSaves.writePlayerSaves();
         return players;
         
     }
@@ -142,6 +142,7 @@ public class GameVisualGUI extends JFrame {
     	playerSaves = new PlayerRecords();
     	players = showStartupDialog();
         board = new GameBoard();
+        voteToEndFlags = new boolean[players.size()];
 
         setTitle("Scrabble-Style Game - Visual GUI");
         setSize(900, 700);
@@ -334,6 +335,36 @@ public class GameVisualGUI extends JFrame {
             updateBoardDisplay();
         });
 
+        JButton voteToEndButton = new JButton("Vote to End");
+        voteToEndButton.addActionListener(evt -> {
+            voteToEndFlags[currentPlayerIndex] = true;
+            int count = 0;
+            for (boolean b : voteToEndFlags) {
+            	if (b==true) count++;
+            }
+            JOptionPane.showMessageDialog(this, current.getName() + " voted to end the game.\n" + 
+            							count + "/" +voteToEndFlags.length + " Players have voted.") ;
+
+            // Check if all players have voted to end
+            boolean allVoted = true;
+            for (boolean voted : voteToEndFlags) {
+                if (!voted) {
+                    allVoted = false;
+                    break;
+                }
+            }
+
+            if (allVoted) {
+                JOptionPane.showMessageDialog(this, "All players voted to end the game. Exiting...");
+                SwingUtilities.getWindowAncestor(handPanel).dispose();  // closes the game window
+                gameOver(); 
+            } else {
+                currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+                updateBoardDisplay();
+            }
+        });
+        buttonPanel.add(voteToEndButton);
+
         
         JButton swapButton = new JButton("Swap Tiles");
         swapButton.addActionListener(evt -> {
@@ -394,14 +425,115 @@ public class GameVisualGUI extends JFrame {
 
         current.fillPlayerHand();
         if (board.checkValidWord(moveToCommit)) {
-            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+           currentPlayerIndex = (currentPlayerIndex + 1) % players.size(); 
         }
+        
+        
 
         // Clear the preview and update display
         previewMove.clear();
         updateBoardDisplay();
     }
 
+    private void gameOver() {
+        ArrayList<Player> winners = new ArrayList<Player>();
+        int maxPoints = 0;
+        for (Player p : players) {
+            if (p.getPlayerPoints() > maxPoints) {
+                winners.clear();
+                maxPoints = p.getPlayerPoints();
+                winners.add(p);
+            } else if (p.getPlayerPoints() == maxPoints) {
+                winners.add(p);
+            }
+        }
+
+        if (winners.size() == players.size()) {
+            String result = "It's a tie! Everyone has the same score: " + maxPoints + " points.";
+            showEndGameDialog(result);
+        } else {
+            for (Player p : players) {
+                if (winners.contains(p)) {
+                    playerSaves.incrementWins(p.getName());
+                } else {
+                    playerSaves.incrementLosses(p.getName());
+                }
+            }
+
+            StringBuilder result = new StringBuilder("🎉 Game Over! Winner(s):\n");
+            for (Player p : winners) {
+                result.append(p.getName()).append(" with ").append(p.getPlayerPoints()).append(" points\n");
+            }
+            result.append("\nUpdated Win/Loss Records:\n");
+            for (Player p : players) {
+                int wins = playerSaves.getWins(p.getName());
+                int losses = playerSaves.getLosses(p.getName());
+                result.append(p.getName()).append(" - Wins: ").append(wins).append(", Losses: ").append(losses).append("\n");
+            }
+
+            playerSaves.writePlayerSaves();
+            showEndGameDialog(result.toString());
+        }
+
+        playerSaves.writePlayerSaves();
+        System.exit(0);
+    }
+
+    private void showEndGameDialog(String message) {
+        Object[] options = {"OK", "View Leaderboard"};
+        int choice = JOptionPane.showOptionDialog(
+                this,
+                message,
+                "Game Over",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        if (choice == 1) {
+            showLeaderboardDialog();
+        }
+    }
+    
+    private void showLeaderboardDialog() {
+        ArrayList<String> names = new ArrayList<>(playerSaves.getPlayerNames());
+
+        // Sort players by wins descending
+        names.sort((a, b) -> Integer.compare(playerSaves.getWins(b), playerSaves.getWins(a)));
+
+        // 1. Find the longest player name
+        int maxNameLength = "Name".length(); // start with header length
+        for (String name : names) {
+            if (name.length() > maxNameLength) {
+                maxNameLength = name.length();
+            }
+        }
+        maxNameLength += 2; // padding space
+
+        StringBuilder leaderboard = new StringBuilder("🏆 Leaderboard:\n\n");
+
+        // 2. Header
+        leaderboard.append(String.format("%-" + maxNameLength + "s %5s %7s\n", "Name", "Wins", "Losses"));
+        leaderboard.append(String.format("%-" + maxNameLength + "s %5s %7s\n", "----", "----", "------"));
+
+        // 3. Data rows
+        for (String name : names) {
+            int wins = playerSaves.getWins(name);
+            int losses = playerSaves.getLosses(name);
+            leaderboard.append(String.format("%-" + maxNameLength + "s %5d %7d\n", name, wins, losses));
+        }
+
+        // 4. Display in monospaced JTextArea
+        JTextArea textArea = new JTextArea(leaderboard.toString());
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+
+        JOptionPane.showMessageDialog(this, new JScrollPane(textArea), "Leaderboard", JOptionPane.PLAIN_MESSAGE);
+    }
+
+
+    
     private static class ValueExportTransferHandler extends TransferHandler {
         private final String value;
 
